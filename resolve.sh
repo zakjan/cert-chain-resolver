@@ -9,17 +9,16 @@ if [ -z $2 ]; then
   exit
 fi
 
-
-FILENAME=$1
+FILE_SRC_DIR=$(cd "$(dirname $1)"; pwd)
+FILENAME=$(basename $1)
 CHAINED_FILENAME=$2
 
 TMP_DIR=$(mktemp -d XXXXX)
-echo -n > $CHAINED_FILENAME
-
+cp /dev/null $CHAINED_FILENAME
 
 # extract the first certificate from input file, to make this script idempotent
 CURRENT_FILENAME=$TMP_DIR/$FILENAME
-openssl x509 -in $FILENAME -out $CURRENT_FILENAME
+openssl x509 -in $FILE_SRC_DIR/$FILENAME -out $CURRENT_FILENAME
 
 # loop over certificate chain using AIA extension, CA Issuers field
 I=1
