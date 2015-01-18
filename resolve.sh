@@ -11,10 +11,10 @@ fi
 
 
 FILENAME=$1
-CHAINED_FILENAME=$2
+OUTPUT_FILENAME=$2
 
 TMP_DIR=$(mktemp -d XXXXX)
-> $CHAINED_FILENAME # clear output file
+> $OUTPUT_FILENAME # clear output file
 
 
 # extract the first certificate from input file, to make this script idempotent
@@ -33,8 +33,8 @@ while true; do
   fi
   echo "$I: $CURRENT_SUBJECT"
 
-  # write certificate to result
-  cat $CURRENT_FILENAME >> $CHAINED_FILENAME
+  # append certificate to result
+  cat $CURRENT_FILENAME >> $OUTPUT_FILENAME
 
   # get issuer's certificate URL
   PARENT_URL=$(openssl x509 -in $CURRENT_FILENAME -noout -text | grep 'CA Issuers' | sed -r 's/^[^:]*://')
