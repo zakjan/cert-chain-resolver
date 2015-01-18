@@ -13,7 +13,7 @@ fi
 FILENAME=$1
 CHAINED_FILENAME=$2
 
-TMP_DIR=$(mktemp -d)
+TMP_DIR=$(mktemp -d XXXXX)
 echo -n > $CHAINED_FILENAME
 
 
