@@ -14,7 +14,7 @@ FILENAME=$(basename $1)
 CHAINED_FILENAME=$2
 
 TMP_DIR=$(mktemp -d XXXXX)
-echo -n > $CHAINED_FILENAME
+cp /dev/null $CHAINED_FILENAME
 
 # extract the first certificate from input file, to make this script idempotent
 CURRENT_FILENAME=$TMP_DIR/$FILENAME
