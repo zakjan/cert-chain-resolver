@@ -36,7 +36,7 @@ while true; do
   # write certificate to result
   cat $CURRENT_FILENAME >> $CHAINED_FILENAME
 
-  # get issuer's certificate
+  # get issuer's certificate URL
   PARENT_URL=$(openssl x509 -in $CURRENT_FILENAME -noout -text | grep 'CA Issuers' | sed -r 's/^[^:]*://')
 
   if [ -z $PARENT_URL ]; then
