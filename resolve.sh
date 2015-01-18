@@ -1,7 +1,11 @@
 #!/usr/bin/env sh
 
 if [ -z $2 ]; then
-  echo "Usage: $0 input-cert-filename output-chained-cert-filename"
+  echo "SSL certificate chain resolver"
+  echo
+  echo "Usage: $0 input-cert output-chained-cert"
+  echo
+  echo "All certificates are in binary DER format."
   exit
 fi
 
@@ -13,10 +17,9 @@ TMP_DIR=$(mktemp -d)
 echo -n > $CHAINED_FILENAME
 
 
+# loop over certificate chain using AIA extension, CA Issuers field
 CURRENT_FILENAME=$FILENAME
 I=1
-
-# loop over certificate chain using AIA extension, CA Issuers field
 while true; do
   # get certificate subject
   CURRENT_SUBJECT=$(cat $CURRENT_FILENAME | openssl x509 -inform der -noout -text | grep 'Subject: ' | sed -r 's/^[^:]*: //')
@@ -48,4 +51,6 @@ while true; do
   I=$((I+1))
 done
 
+
+# cleanup
 rm -rf $TMP_DIR
