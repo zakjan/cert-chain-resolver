@@ -14,11 +14,11 @@ FILENAME=$1
 CHAINED_FILENAME=$2
 
 TMP_DIR=$(mktemp -d XXXXX)
-echo -n > $CHAINED_FILENAME
+> $CHAINED_FILENAME # clear output file
 
 
 # extract the first certificate from input file, to make this script idempotent
-CURRENT_FILENAME=$TMP_DIR/$FILENAME
+CURRENT_FILENAME=$TMP_DIR/$(basename $FILENAME)
 openssl x509 -in $FILENAME -out $CURRENT_FILENAME
 
 # loop over certificate chain using AIA extension, CA Issuers field
