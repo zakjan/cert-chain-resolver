@@ -3,7 +3,7 @@
 if [ -z $2 ]; then
   echo "SSL certificate chain resolver"
   echo
-  echo "Usage: $0 input-cert output-chained-cert"
+  echo "Usage: $0 input.pem output.pem"
   echo
   echo "All certificates are in Base64-encoded PEM format."
   exit
@@ -17,8 +17,11 @@ TMP_DIR=$(mktemp -d)
 echo -n > $CHAINED_FILENAME
 
 
+# extract the first certificate from input file, to make this script idempotent
+CURRENT_FILENAME=$TMP_DIR/$FILENAME
+openssl x509 -in $FILENAME -out $CURRENT_FILENAME
+
 # loop over certificate chain using AIA extension, CA Issuers field
-CURRENT_FILENAME=$FILENAME
 I=1
 while true; do
   # get certificate subject
