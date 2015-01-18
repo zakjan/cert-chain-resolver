@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 if [ -z $2 ]; then
-  echo "Usage: $0 cert-filename chained-cert-filename"
+  echo "Usage: $0 input-cert-filename output-chained-cert-filename"
   exit
 fi
 
@@ -16,7 +16,7 @@ echo -n > $CHAINED_FILENAME
 CURRENT_FILENAME=$FILENAME
 I=1
 
-# loop over certificate chain, resolvable using AIA extension, CA Issuers field
+# loop over certificate chain using AIA extension, CA Issuers field
 while true; do
   # get certificate subject
   CURRENT_SUBJECT=$(cat $CURRENT_FILENAME | openssl x509 -inform der -noout -text | grep 'Subject: ' | sed -r 's/^[^:]*: //')
