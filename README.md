@@ -13,7 +13,7 @@ SSL certificate chain resolver
 ./resolve.sh input-cert-filename output-chained-cert-filename
 ```
 
-All certificates are in binary DER format.
+All certificates are in Base64-encoded PEM format.
 
 ## Description
 
@@ -31,6 +31,5 @@ You should be able to download intermediate certificates from your certificate i
 
 ## TODO
 
-- fail on wrong input file format (PEM)
 - fail on private key file, accept only public key file
 - fail on multiple certificates in input file

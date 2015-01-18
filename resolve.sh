@@ -5,7 +5,7 @@ if [ -z $2 ]; then
   echo
   echo "Usage: $0 input-cert output-chained-cert"
   echo
-  echo "All certificates are in binary DER format."
+  echo "All certificates are in Base64-encoded PEM format."
   exit
 fi
 
@@ -22,7 +22,7 @@ CURRENT_FILENAME=$FILENAME
 I=1
 while true; do
   # get certificate subject
-  CURRENT_SUBJECT=$(cat $CURRENT_FILENAME | openssl x509 -inform der -noout -text | grep 'Subject: ' | sed -r 's/^[^:]*: //')
+  CURRENT_SUBJECT=$(openssl x509 -in $CURRENT_FILENAME -noout -text | grep 'Subject: ' | sed -r 's/^[^:]*: //')
 
   if [ -z "$CURRENT_SUBJECT" ]; then
     echo "Error (empty subject)."
@@ -33,8 +33,8 @@ while true; do
   # write certificate to result
   cat $CURRENT_FILENAME >> $CHAINED_FILENAME
 
-  # get issuer certificate
-  PARENT_URL=$(cat $CURRENT_FILENAME | openssl x509 -inform der -noout -text | grep 'CA Issuers' | sed -r 's/^[^:]*://')
+  # get issuer's certificate
+  PARENT_URL=$(openssl x509 -in $CURRENT_FILENAME -noout -text | grep 'CA Issuers' | sed -r 's/^[^:]*://')
 
   if [ -z $PARENT_URL ]; then
     echo
@@ -43,11 +43,12 @@ while true; do
     break
   fi
 
-  # download issuer certificate
+  # download issuer's certificate, convert from DER to PEM
   PARENT_FILENAME=$TMP_DIR/$(basename $PARENT_URL)
   curl -s -o $PARENT_FILENAME $PARENT_URL
+  openssl x509 -in $PARENT_FILENAME -inform der -out $PARENT_FILENAME.pem
 
-  CURRENT_FILENAME=$PARENT_FILENAME
+  CURRENT_FILENAME=$PARENT_FILENAME.pem
   I=$((I+1))
 done
 
