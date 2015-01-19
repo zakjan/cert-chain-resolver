@@ -13,7 +13,7 @@ fi
 FILENAME=$1
 OUTPUT_FILENAME=$2
 
-TMP_DIR=$(mktemp -d XXXXX)
+TMP_DIR=$(mktemp -d XXXXX) # create a temporary directory for downloaded certificates, it is removed in the end
 > $OUTPUT_FILENAME # clear output file
 
 
@@ -24,8 +24,11 @@ openssl x509 -in $FILENAME -out $CURRENT_FILENAME
 # loop over certificate chain using AIA extension, CA Issuers field
 I=1
 while true; do
+  # parse certificate
+  CERT_TEXT=$(openssl x509 -in $CURRENT_FILENAME -noout -text)
+
   # get certificate subject
-  CURRENT_SUBJECT=$(openssl x509 -in $CURRENT_FILENAME -noout -text | grep 'Subject: ' | sed -r 's/^[^:]*: //')
+  CURRENT_SUBJECT=$(echo "$CERT_TEXT" | awk 'BEGIN{FS="Subject: "} NF==2{print $2}')
 
   if [ -z "$CURRENT_SUBJECT" ]; then
     echo "Error (empty subject)."
@@ -37,7 +40,7 @@ while true; do
   cat $CURRENT_FILENAME >> $OUTPUT_FILENAME
 
   # get issuer's certificate URL
-  PARENT_URL=$(openssl x509 -in $CURRENT_FILENAME -noout -text | grep 'CA Issuers' | sed -r 's/^[^:]*://')
+  PARENT_URL=$(echo "$CERT_TEXT" | awk 'BEGIN{FS="CA Issuers - URI:"} NF==2{print $2}')
 
   if [ -z $PARENT_URL ]; then
     echo
@@ -57,4 +60,4 @@ done
 
 
 # cleanup
-rm -rf $TMP_DIR
+rm -r $TMP_DIR
