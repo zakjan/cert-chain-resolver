@@ -18,8 +18,11 @@ All certificates are in Base64-encoded PEM format.
 Example:
 
 ```
-$ grep 'CERTIFICATE' input.pem
+$ grep -C 1 'CERTIFICATE' input.pem
 -----BEGIN CERTIFICATE-----
+MIIFSzCCBDOgAwIBAgIQMT4Uwi0nWHXk9Ww81+gXlzANBgkqhkiG9w0BAQsFADCB
+--
+SZZbFEwO75QSDeeEzRdX
 -----END CERTIFICATE-----
 
 $ ./resolve.sh input.pem output.pem
@@ -30,12 +33,21 @@ $ ./resolve.sh input.pem output.pem
 Certificate chain complete.
 Total 3 certificate(s) written.
 
-$ grep 'CERTIFICATE' output.pem
+$ grep -C 1 'CERTIFICATE' output.pem
 -----BEGIN CERTIFICATE-----
+MIIFSzCCBDOgAwIBAgIQMT4Uwi0nWHXk9Ww81+gXlzANBgkqhkiG9w0BAQsFADCB
+--
+SZZbFEwO75QSDeeEzRdX
 -----END CERTIFICATE-----
 -----BEGIN CERTIFICATE-----
+MIIGCDCCA/CgAwIBAgIQKy5u6tl1NmwUim7bo3yMBzANBgkqhkiG9w0BAQwFADCB
+--
++AZxAeKCINT+b72x
 -----END CERTIFICATE-----
 -----BEGIN CERTIFICATE-----
+MIIFdDCCBFygAwIBAgIQJ2buVutJ846r13Ci/ITeIjANBgkqhkiG9w0BAQwFADBv
+--
+pu/xO28QOG8=
 -----END CERTIFICATE-----
 ```
 
@@ -49,4 +61,8 @@ A certificate can contain a special *Authority Information Access* extension ([R
 
 A server should always send a complete chain, which means concatenated all certificates from the certificate to the trusted root certificate (exclusive, in this order), to prevent such issues. Note, the trusted root certificate should not be there, as it is already included in the system’s root certificate store.
 
-You should be able to fetch intermediate certificates from the issuer and concat them together by yourself, this tool helps you automatize it.
+You should be able to fetch intermediate certificates from the issuer and concat them together by yourself, this tool helps you automatize it by looping over certificate's AIA extension field.
+
+## TODO
+
+- A public web service to make it available to more users (Windows, non-IT)
