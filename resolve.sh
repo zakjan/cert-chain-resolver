@@ -24,7 +24,7 @@ openssl x509 -in $FILENAME -out $CURRENT_FILENAME
 # loop over certificate chain using AIA extension, CA Issuers field
 I=1
 while true; do
-  # parse certificate
+  # parse certificate (this text is parsed below for specific fields. dirty solution, but it works)
   CERT_TEXT=$(openssl x509 -in $CURRENT_FILENAME -noout -text)
 
   # get certificate subject
