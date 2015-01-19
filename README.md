@@ -15,6 +15,30 @@ Dependencies:
 
 All certificates are in Base64-encoded PEM format.
 
+Example:
+
+```
+$ grep 'CERTIFICATE' input.pem
+-----BEGIN CERTIFICATE-----
+-----END CERTIFICATE-----
+
+$ ./resolve.sh input.pem output.pem
+1: OU=Domain Control Validated, OU=PositiveSSL Wildcard, CN=*.xxx.com
+2: C=GB, ST=Greater Manchester, L=Salford, O=COMODO CA Limited, CN=COMODO RSA Domain Validation Secure Server CA
+3: C=GB, ST=Greater Manchester, L=Salford, O=COMODO CA Limited, CN=COMODO RSA Certification Authority
+
+Certificate chain complete.
+Total 3 certificate(s) written.
+
+$ grep 'CERTIFICATE' output.pem
+-----BEGIN CERTIFICATE-----
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+-----END CERTIFICATE-----
+```
+
 ## Description
 
 ![Incomplete certificate chain](incomplete-chain.png)
