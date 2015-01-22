@@ -1,6 +1,10 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-if [ -z $2 ]; then
+set -e
+set -u
+
+
+if [ $# != 2 ]; then
   echo "SSL certificate chain resolver"
   echo
   echo "Usage: $0 input.pem output.pem"
@@ -10,14 +14,14 @@ if [ -z $2 ]; then
 fi
 
 
-FILENAME=$1
-OUTPUT_FILENAME=$2
+FILENAME="$1"
+OUTPUT_FILENAME="$2"
 
-> $OUTPUT_FILENAME # clear output file
+> "$OUTPUT_FILENAME" # clear output file
 
 
 # extract the first certificate from input file, to make this script idempotent
-CURRENT_CERT=$(openssl x509 -in $FILENAME)
+CURRENT_CERT=$(openssl x509 -in "$FILENAME")
 
 # loop over certificate chain using AIA extension, CA Issuers field
 I=1
@@ -34,16 +38,16 @@ while true; do
   echo "$I: $CURRENT_SUBJECT"
 
   # append certificate to result
-  echo "$CURRENT_CERT" >> $OUTPUT_FILENAME
+  echo "$CURRENT_CERT" >> "$OUTPUT_FILENAME"
 
   # get issuer's certificate URL
   PARENT_URL=$(echo "$CURRENT_CERT_TEXT" | awk 'BEGIN{FS="CA Issuers - URI:"} NF==2{print $2}')
-  if [ -z $PARENT_URL ]; then
+  if [ -z "$PARENT_URL" ]; then
     break
   fi
 
   # download issuer's certificate, convert from DER to PEM
-  CURRENT_CERT=$(curl -s $PARENT_URL | openssl x509 -inform der)
+  CURRENT_CERT=$(curl -s "$PARENT_URL" | openssl x509 -inform der)
 
   I=$((I+1))
 done
@@ -54,8 +58,7 @@ echo "Certificate chain complete."
 echo "Total $I certificate(s) written."
 
 # verify the certificate chain
-openssl verify -untrusted $OUTPUT_FILENAME $OUTPUT_FILENAME > /dev/null
-if [ $? != 0 ]; then
+if ! openssl verify -untrusted "$OUTPUT_FILENAME" "$OUTPUT_FILENAME" > /dev/null; then
   echo "Error: verification failed"
   exit 1
 fi
