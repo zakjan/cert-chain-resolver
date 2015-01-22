@@ -27,9 +27,8 @@ while true; do
 
   # get certificate subject
   CURRENT_SUBJECT=$(echo "$CURRENT_CERT_TEXT" | awk 'BEGIN{FS="Subject: "} NF==2{print $2}')
-
   if [ -z "$CURRENT_SUBJECT" ]; then
-    echo "Error (empty subject)."
+    echo "Error: empty subject"
     exit 1
   fi
   echo "$I: $CURRENT_SUBJECT"
@@ -39,11 +38,7 @@ while true; do
 
   # get issuer's certificate URL
   PARENT_URL=$(echo "$CURRENT_CERT_TEXT" | awk 'BEGIN{FS="CA Issuers - URI:"} NF==2{print $2}')
-
   if [ -z $PARENT_URL ]; then
-    echo
-    echo "Certificate chain complete."
-    echo "Total $I certificate(s) written."
     break
   fi
 
@@ -52,3 +47,16 @@ while true; do
 
   I=$((I+1))
 done
+
+
+echo
+echo "Certificate chain complete."
+echo "Total $I certificate(s) written."
+
+# verify the certificate chain
+openssl verify -untrusted $OUTPUT_FILENAME $OUTPUT_FILENAME > /dev/null
+if [ $? != 0 ]; then
+  echo "Error: verification failed"
+  exit 1
+fi
+echo "Verified successfully."
