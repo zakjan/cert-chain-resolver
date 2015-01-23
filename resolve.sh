@@ -1,7 +1,24 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 set -e
 set -u
+
+
+alias command_exists="type >/dev/null 2>&1"
+
+if command_exists curl; then
+  alias download_file="curl -s"
+elif command_exists wget; then
+  alias download_file="wget -q -O -"
+else
+  echo "Error: curl or wget is required"
+  exit 1
+fi
+
+if ! command_exists openssl; then
+  echo "Error: openssl is required"
+  exit 1
+fi
 
 
 if [ $# != 2 ]; then
@@ -47,7 +64,7 @@ while true; do
   fi
 
   # download issuer's certificate, convert from DER to PEM
-  CURRENT_CERT=$(curl -s "$PARENT_URL" | openssl x509 -inform der)
+  CURRENT_CERT=$(download_file "$PARENT_URL" | openssl x509 -inform der)
 
   I=$((I+1))
 done

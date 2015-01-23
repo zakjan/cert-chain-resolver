@@ -6,8 +6,8 @@ This tool can help you fix the *incomplete certificate chain* issue, also report
 
 Dependencies:
 
+- curl or wget
 - OpenSSL
-- curl
 
 ```
 ./resolve.sh input.pem output.pem
@@ -32,6 +32,7 @@ $ ./resolve.sh input.pem output.pem
 
 Certificate chain complete.
 Total 3 certificate(s) written.
+Verified successfully.
 
 $ grep -C 1 'CERTIFICATE' output.pem
 -----BEGIN CERTIFICATE-----
