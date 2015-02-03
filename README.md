@@ -58,4 +58,4 @@ You should be able to fetch intermediate certificates from the issuer and concat
 
 ## Licence
 
-Not determined yet. Ask me.
+[MIT](LICENCE). Appreciations welcome.
