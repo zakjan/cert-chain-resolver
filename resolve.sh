@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
-set -e
-set -u
+set -e # fail on unhandled error
+set -u # fail on undefined variable
 
 
 alias command_exists="type >/dev/null 2>&1"

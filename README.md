@@ -1,32 +1,32 @@
 # SSL certificate chain resolver
 
-[![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](https://tldrlegal.com/license/mit-license)
 [![CircleCI](https://img.shields.io/circleci/project/zakjan/cert-chain-resolver.svg)](https://circleci.com/gh/zakjan/cert-chain-resolver)
+[![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](https://tldrlegal.com/license/mit-license)
 [![Gratipay](https://img.shields.io/gratipay/zakjan.svg)](https://gratipay.com/zakjan/)
 
 This script downloads all intermediate CA certificates for a given SSL server certificate. It can help you fix the *incomplete certificate chain* issue, also reported as *Extra download* by [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/).
 
 ## Usage
 
-Dependencies:
+### Dependencies
 
 - curl or wget
 - OpenSSL
 
 ```
-./resolve.sh input.pem output.pem
+./resolve.sh input.crt output.crt
 ```
 
 All certificates are in Base64-encoded PEM format.
 
-Example:
+### Example
 
 ```
-$ grep 'CERTIFICATE' input.pem
+$ grep 'CERTIFICATE' input.crt
 -----BEGIN CERTIFICATE-----
 -----END CERTIFICATE-----
 
-$ ./resolve.sh input.pem output.pem
+$ ./resolve.sh input.crt output.crt
 1: OU=Domain Control Validated, OU=PositiveSSL Wildcard, CN=*.xxx.com
 2: C=GB, ST=Greater Manchester, L=Salford, O=COMODO CA Limited, CN=COMODO RSA Domain Validation Secure Server CA
 3: C=GB, ST=Greater Manchester, L=Salford, O=COMODO CA Limited, CN=COMODO RSA Certification Authority
@@ -35,7 +35,7 @@ Certificate chain complete.
 Total 3 certificate(s) written.
 Verified successfully.
 
-$ grep 'CERTIFICATE' output.pem
+$ grep 'CERTIFICATE' output.crt
 -----BEGIN CERTIFICATE-----
 -----END CERTIFICATE-----
 -----BEGIN CERTIFICATE-----
@@ -44,9 +44,15 @@ $ grep 'CERTIFICATE' output.pem
 -----END CERTIFICATE-----
 ```
 
+## Tests
+
+```
+tests/run.sh
+```
+
 ## Description
 
-![Incomplete certificate chain](incomplete-chain.png)
+![Incomplete certificate chain](images/incomplete-chain.png)
 
 All operating systems contain a set of default trusted root certificates. But CAs usually don't use their root certificate to sign customer certificates. Instead of they use so called intermediate certificates, because they can be rotated more frequently.
 
