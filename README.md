@@ -1,5 +1,9 @@
 # SSL certificate chain resolver
 
+[![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](https://tldrlegal.com/license/mit-license)
+[![CircleCI](https://img.shields.io/circleci/project/zakjan/cert-chain-resolver.svg)](https://circleci.com/gh/zakjan/cert-chain-resolver)
+[![Gratipay](https://img.shields.io/gratipay/zakjan.svg)](https://gratipay.com/zakjan/)
+
 This script downloads all intermediate CA certificates for a given SSL server certificate. It can help you fix the *incomplete certificate chain* issue, also reported as *Extra download* by [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/).
 
 ## Usage
@@ -55,7 +59,3 @@ You should be able to fetch intermediate certificates from the issuer and concat
 ## Other implementations
 
 - [freekmurze/ssl-certificate-chain-resolver](https://github.com/freekmurze/ssl-certificate-chain-resolver) (PHP)
-
-## Licence
-
-[MIT](LICENCE). Appreciations welcome.
