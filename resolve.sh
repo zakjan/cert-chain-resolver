@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+# Copyright (c) 2015 Jan Žák (http://zakjan.cz)
+# The MIT License (MIT).
+
 set -e # fail on unhandled error
 set -u # fail on undefined variable
 

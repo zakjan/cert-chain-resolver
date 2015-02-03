@@ -50,7 +50,7 @@ $ grep 'CERTIFICATE' output.crt
 tests/run.sh
 ```
 
-## Description
+## Background
 
 ![Incomplete certificate chain](images/incomplete-chain.png)
 
@@ -65,3 +65,9 @@ You should be able to fetch intermediate certificates from the issuer and concat
 ## Other implementations
 
 - [freekmurze/ssl-certificate-chain-resolver](https://github.com/freekmurze/ssl-certificate-chain-resolver) (PHP)
+
+## Licence
+
+The MIT License (MIT). See [LICENCE](LICENCE) file for more information. [TL;DR](https://tldrlegal.com/license/mit-license)
+
+If you use my code in some interesting project, I'd be happy to know about it.
