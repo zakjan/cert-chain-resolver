@@ -1,6 +1,6 @@
 # SSL certificate chain resolver
 
-This tool can help you fix the *incomplete certificate chain* issue, also reported as *Extra download* by [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/).
+This script downloads all intermediate CA certificates for a given SSL server certificate. It can help you fix the *incomplete certificate chain* issue, also reported as *Extra download* by [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/).
 
 ## Usage
 
@@ -18,11 +18,8 @@ All certificates are in Base64-encoded PEM format.
 Example:
 
 ```
-$ grep -C 1 'CERTIFICATE' input.pem
+$ grep 'CERTIFICATE' input.pem
 -----BEGIN CERTIFICATE-----
-MIIFSzCCBDOgAwIBAgIQMT4Uwi0nWHXk9Ww81+gXlzANBgkqhkiG9w0BAQsFADCB
---
-SZZbFEwO75QSDeeEzRdX
 -----END CERTIFICATE-----
 
 $ ./resolve.sh input.pem output.pem
@@ -34,21 +31,12 @@ Certificate chain complete.
 Total 3 certificate(s) written.
 Verified successfully.
 
-$ grep -C 1 'CERTIFICATE' output.pem
+$ grep 'CERTIFICATE' output.pem
 -----BEGIN CERTIFICATE-----
-MIIFSzCCBDOgAwIBAgIQMT4Uwi0nWHXk9Ww81+gXlzANBgkqhkiG9w0BAQsFADCB
---
-SZZbFEwO75QSDeeEzRdX
 -----END CERTIFICATE-----
 -----BEGIN CERTIFICATE-----
-MIIGCDCCA/CgAwIBAgIQKy5u6tl1NmwUim7bo3yMBzANBgkqhkiG9w0BAQwFADCB
---
-+AZxAeKCINT+b72x
 -----END CERTIFICATE-----
 -----BEGIN CERTIFICATE-----
-MIIFdDCCBFygAwIBAgIQJ2buVutJ846r13Ci/ITeIjANBgkqhkiG9w0BAQwFADBv
---
-pu/xO28QOG8=
 -----END CERTIFICATE-----
 ```
 
@@ -64,6 +52,10 @@ A server should always send a complete chain, which means concatenated all certi
 
 You should be able to fetch intermediate certificates from the issuer and concat them together by yourself, this tool helps you automatize it by looping over certificate's AIA extension field.
 
-## TODO
+## Other implementations
 
-- A public web service to make it available to more users (Windows, non-IT)
+- [freekmurze/ssl-certificate-chain-resolver](https://github.com/freekmurze/ssl-certificate-chain-resolver) (PHP)
+
+## Licence
+
+Not determined yet. Ask me.
