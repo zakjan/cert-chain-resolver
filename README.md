@@ -5,20 +5,21 @@
 
 This script downloads all intermediate CA certificates for a given SSL server certificate. It can help you fix the *incomplete certificate chain* issue, also reported as *Extra download* by [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/).
 
-## Usage
-
-### Dependencies
+## Dependencies
 
 - curl or wget
 - OpenSSL
+
+## Usage
 
 ```
 ./resolve.sh input.crt output.crt
 ```
 
-All certificates are in Base64-encoded PEM format.
+Input certificate can be in either DER or PEM format.
+Output certificate is in PEM format.
 
-### Example
+## Example
 
 ```
 $ grep 'CERTIFICATE' input.crt
@@ -60,6 +61,11 @@ A certificate can contain a special *Authority Information Access* extension ([R
 A server should always send a complete chain, which means concatenated all certificates from the certificate to the trusted root certificate (exclusive, in this order), to prevent such issues. Note, the trusted root certificate should not be there, as it is already included in the system’s root certificate store.
 
 You should be able to fetch intermediate certificates from the issuer and concat them together by yourself, this script helps you automatize it by looping over certificate's AIA extension field.
+
+## TODO
+
+- switch to support output in DER
+- switch to support output intermediate chain only, without leaf cert
 
 ## Other implementations
 
