@@ -3,7 +3,7 @@
 [![CircleCI](https://img.shields.io/circleci/project/zakjan/cert-chain-resolver.svg)](https://circleci.com/gh/zakjan/cert-chain-resolver)
 [![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](https://tldrlegal.com/license/mit-license)
 
-This script downloads all intermediate CA certificates for a given SSL server certificate. It can help you fix the *incomplete certificate chain* issue, also reported as *Extra download* by [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/).
+This shell script downloads all intermediate CA certificates for a given SSL server certificate. It can help you fix the *incomplete certificate chain* issue, also reported as *Extra download* by [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/).
 
 ## Dependencies
 
@@ -16,8 +16,7 @@ This script downloads all intermediate CA certificates for a given SSL server ce
 ./resolve.sh input.crt output.crt
 ```
 
-Input certificate can be in either DER or PEM format.
-Output certificate is in PEM format.
+Input certificate can be in either DER or PEM format. Output certificate bundle is in PEM format.
 
 ## Example
 
@@ -64,8 +63,8 @@ You should be able to fetch intermediate certificates from the issuer and concat
 
 ## TODO
 
-- switch to support output in DER
-- switch to support output intermediate chain only, without leaf cert
+- switch to output DER format
+- switch to output intermediate chain only, without input certificate
 
 ## Other implementations
 
