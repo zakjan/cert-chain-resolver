@@ -63,8 +63,8 @@ You should be able to fetch intermediate certificates from the issuer and concat
 
 ## TODO
 
-- switch to output DER format
-- switch to output intermediate chain only, without input certificate
+- a switch to output DER format
+- a switch to output intermediate chain only, without input certificate
 
 ## Other implementations
 
