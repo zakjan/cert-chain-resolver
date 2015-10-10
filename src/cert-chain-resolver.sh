@@ -1,6 +1,6 @@
-#!/usr/bin/env sh
+#!/bin/sh
 
-# TLS certificate chain resolver
+# SSL certificate chain resolver
 #
 # https://github.com/zakjan/cert-chain-resolver
 #
@@ -41,7 +41,7 @@ cert_get_issuer_url() {
 
 
 usage() {
-  error "TLS certificate chain resolver"
+  error "SSL certificate chain resolver"
   error
   error "Usage: ./cert-chain-resolver.sh [OPTION]... [INPUT_FILE]"
   error
@@ -49,8 +49,8 @@ usage() {
   error "Write output to stdout in PEM format, both leaf and intermediate certificates."
   error
   error "    -d|--der"
+  error
   error "        output DER format"
-  error "        use for IIS"
   error
   error "    -i|--intermediate-only"
   error
@@ -58,6 +58,7 @@ usage() {
   error "        use for Apache < 2.4.8, AWS"
   error
   error "    -o|--output OUTPUT_FILE"
+  error
   error "        write output to OUTPUT_FILE"
 }
 
@@ -85,7 +86,7 @@ parse_opts() {
       -i|--intermediate-only) OUTPUT_INTERMEDIATE_ONLY=1; shift;;
       -o|--output) OUTPUT_FILENAME="$2"; shift 2;;
       -h|--help) usage; return 1;;
-      -*) error "Unknown option $1"; return 1;;
+      -*) error "Unknown option $1"; error "See --help for accepted options"; return 1;;
       *) break;;
     esac
   done

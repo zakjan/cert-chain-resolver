@@ -1,9 +1,9 @@
-# TLS certificate chain resolver
+# SSL certificate chain resolver
 
 [![CircleCI](https://img.shields.io/circleci/project/zakjan/cert-chain-resolver.svg)](https://circleci.com/gh/zakjan/cert-chain-resolver)
 [![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](https://tldrlegal.com/license/mit-license)
 
-This shell script downloads all intermediate CA certificates for a given TLS server certificate. It can help you fix the *incomplete certificate chain* issue, also reported as *Extra download* by [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/).
+This shell script downloads all intermediate CA certificates for a given SSL server certificate. It can help you fix the *incomplete certificate chain* issue, also reported as *Extra download* by [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/).
 
 ## Dependencies
 
@@ -13,7 +13,7 @@ This shell script downloads all intermediate CA certificates for a given TLS ser
 ## Usage
 
 ```
-TLS certificate chain resolver
+SSL certificate chain resolver
 
 Usage: ./cert-chain-resolver.sh [OPTION]... [INPUT_FILE]
 
@@ -21,8 +21,8 @@ Read input from INPUT_FILE or stdin, in either DER or PEM format.
 Write output to stdout in PEM format, both leaf and intermediate certificates.
 
     -d|--der
+
         output DER format
-        use for IIS
 
     -i|--intermediate-only
 
@@ -30,26 +30,19 @@ Write output to stdout in PEM format, both leaf and intermediate certificates.
         use for Apache < 2.4.8, AWS
 
     -o|--output OUTPUT_FILE
+
         write output to OUTPUT_FILE
 ```
 
 ## Example
 
 ```
-$ grep 'BEGIN CERTIFICATE' domain.pem | wc -l
-1
-
 $ ./cert-chain-resolver.sh -o domain.bundle.pem domain.pem
 1: OU=Domain Control Validated, OU=PositiveSSL Wildcard, CN=*.xxx.com
 2: C=GB, ST=Greater Manchester, L=Salford, O=COMODO CA Limited, CN=COMODO RSA Domain Validation Secure Server CA
 3: C=GB, ST=Greater Manchester, L=Salford, O=COMODO CA Limited, CN=COMODO RSA Certification Authority
-
 Certificate chain complete.
-Total 3 certificate(s) written.
-Verified successfully.
-
-$ grep 'BEGIN CERTIFICATE' domain.bundle.pem | wc -l
-3
+Total 3 certificate(s) found.
 ```
 
 ## Tests
