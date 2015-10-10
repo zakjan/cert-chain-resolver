@@ -17,8 +17,8 @@ SSL certificate chain resolver
 
 Usage: ./cert-chain-resolver.sh [OPTION]... [INPUT_FILE]
 
-Read input from INPUT_FILE or stdin, in either DER or PEM format.
-Write output to stdout in PEM format, both leaf and intermediate certificates.
+Read certificate from stdin, or INPUT_FILE if specified. The input certificate can be in either DER or PEM format.
+Write certificate bundle to stdout in PEM format, with both leaf and intermediate certificates.
 
     -d|--der
 
@@ -27,7 +27,6 @@ Write output to stdout in PEM format, both leaf and intermediate certificates.
     -i|--intermediate-only
 
         output intermediate certificates only, without leaf certificate
-        use for Apache < 2.4.8, AWS
 
     -o|--output OUTPUT_FILE
 

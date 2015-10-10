@@ -45,8 +45,8 @@ usage() {
   error
   error "Usage: ./cert-chain-resolver.sh [OPTION]... [INPUT_FILE]"
   error
-  error "Read input from INPUT_FILE or stdin, in either DER or PEM format."
-  error "Write output to stdout in PEM format, both leaf and intermediate certificates."
+  error "Read certificate from stdin, or INPUT_FILE if specified. The input certificate can be in either DER or PEM format."
+  error "Write certificate bundle to stdout in PEM format, with both leaf and intermediate certificates."
   error
   error "    -d|--der"
   error
@@ -55,7 +55,6 @@ usage() {
   error "    -i|--intermediate-only"
   error
   error "        output intermediate certificates only, without leaf certificate"
-  error "        use for Apache < 2.4.8, AWS"
   error
   error "    -o|--output OUTPUT_FILE"
   error
@@ -102,11 +101,11 @@ parse_opts() {
 
 main() {
   if ! check_dependencies; then
-    exit 1
+    return 1
   fi
 
   if ! parse_opts "$@"; then
-    exit 1
+    return 1
   fi
 
   > "$OUTPUT_FILENAME" # clear output file

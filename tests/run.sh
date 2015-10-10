@@ -35,7 +35,11 @@ TEMP_FILE="$(mktemp)"
   $CMD -d -i -o "$TEMP_FILE" "$DIR/comodo.crt"
   diff "$TEMP_FILE" "$DIR/comodo.chain.der.crt"
 
-  # it should output certificate bundle in PEM format, backward compatible
+  # it should output certificate bundle in PEM format, with input from stdin and output to stdout
+  $CMD < "$DIR/comodo.crt" > "$TEMP_FILE"
+  diff "$TEMP_FILE" "$DIR/comodo.bundle.crt"
+
+  # it should output certificate bundle in PEM format, with output to second argument (backward compatibility)
   $CMD "$DIR/comodo.crt" "$TEMP_FILE"
   diff "$TEMP_FILE" "$DIR/comodo.bundle.crt"
 )
