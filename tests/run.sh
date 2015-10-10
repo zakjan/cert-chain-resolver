@@ -11,17 +11,29 @@ TEMP_FILE="$(mktemp)"
 (
   set -e
 
-  # it should download all intermediate CA certs - Comodo, PEM leaf, 2x DER intermediate
+  # it should output certificate bundle in PEM format - Comodo, PEM leaf, 2x DER intermediate
   $CMD -o "$TEMP_FILE" "$DIR/comodo.crt"
   diff "$TEMP_FILE" "$DIR/comodo.bundle.crt"
 
-  # it should download all intermediate CA certs - Comodo, DER leaf, 2x DER intermediate
+  # it should output certificate bundle in PEM format - Comodo, DER leaf, 2x DER intermediate
   $CMD -o "$TEMP_FILE" "$DIR/comodo.der.crt"
   diff "$TEMP_FILE" "$DIR/comodo.bundle.crt"
 
-  # it should download all intermediate CA certs - GoDaddy, PEM leaf, PEM intermediate
+  # it should output certificate bundle in PEM format - GoDaddy, PEM leaf, PEM intermediate
   $CMD -o "$TEMP_FILE" "$DIR/godaddy.crt"
   diff "$TEMP_FILE" "$DIR/godaddy.bundle.crt"
+
+  # it should output certificate bundle in DER format
+  $CMD -d -o "$TEMP_FILE" "$DIR/comodo.crt"
+  diff "$TEMP_FILE" "$DIR/comodo.bundle.der.crt"
+
+  # it should output certificate chain in PEM format
+  $CMD -i -o "$TEMP_FILE" "$DIR/comodo.crt"
+  diff "$TEMP_FILE" "$DIR/comodo.chain.crt"
+
+  # it should output certificate chain in DER format
+  $CMD -d -i -o "$TEMP_FILE" "$DIR/comodo.crt"
+  diff "$TEMP_FILE" "$DIR/comodo.chain.der.crt"
 )
 STATUS=$?
 
