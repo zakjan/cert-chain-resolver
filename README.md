@@ -7,16 +7,29 @@ This shell script downloads all intermediate CA certificates for a given SSL ser
 
 ## Dependencies
 
-- curl or wget
+- wget
 - OpenSSL
 
 ## Usage
 
 ```
-./resolve.sh input.crt output.crt
-```
+SSL certificate chain resolver
 
-Input certificate can be in either DER or PEM format. Output certificate bundle is in PEM format.
+Usage: ./cert-chain-resolver.sh [OPTION] [FILE]
+
+Input certificate is from FILE or stdin, it can be in either DER or PEM format.
+Output certificate is to stdout in PEM format by default.
+
+    -d|--der
+        output DER format
+
+    -i|--intermediate-only
+
+        output intermediate certificates only, without leaf certificate
+
+    -o|--output
+        output filename
+```
 
 ## Example
 
@@ -25,7 +38,7 @@ $ grep 'CERTIFICATE' input.crt
 -----BEGIN CERTIFICATE-----
 -----END CERTIFICATE-----
 
-$ ./resolve.sh input.crt output.crt
+$ ./cert-chain-resolver.sh -o output.crt input.crt
 1: OU=Domain Control Validated, OU=PositiveSSL Wildcard, CN=*.xxx.com
 2: C=GB, ST=Greater Manchester, L=Salford, O=COMODO CA Limited, CN=COMODO RSA Domain Validation Secure Server CA
 3: C=GB, ST=Greater Manchester, L=Salford, O=COMODO CA Limited, CN=COMODO RSA Certification Authority
@@ -60,11 +73,6 @@ A certificate can contain a special *Authority Information Access* extension ([R
 A server should always send a complete chain, which means concatenated all certificates from the certificate to the trusted root certificate (exclusive, in this order), to prevent such issues. Note, the trusted root certificate should not be there, as it is already included in the system’s root certificate store.
 
 You should be able to fetch intermediate certificates from the issuer and concat them together by yourself, this script helps you automatize it by looping over certificate's AIA extension field.
-
-## TODO
-
-- a switch to output DER format
-- a switch to output intermediate chain only, without input certificate
 
 ## Other implementations
 
