@@ -1,9 +1,9 @@
-# SSL certificate chain resolver
+# TLS certificate chain resolver
 
 [![CircleCI](https://img.shields.io/circleci/project/zakjan/cert-chain-resolver.svg)](https://circleci.com/gh/zakjan/cert-chain-resolver)
 [![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](https://tldrlegal.com/license/mit-license)
 
-This shell script downloads all intermediate CA certificates for a given SSL server certificate. It can help you fix the *incomplete certificate chain* issue, also reported as *Extra download* by [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/).
+This shell script downloads all intermediate CA certificates for a given TLS server certificate. It can help you fix the *incomplete certificate chain* issue, also reported as *Extra download* by [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/).
 
 ## Dependencies
 
@@ -13,7 +13,7 @@ This shell script downloads all intermediate CA certificates for a given SSL ser
 ## Usage
 
 ```
-SSL certificate chain resolver
+TLS certificate chain resolver
 
 Usage: ./cert-chain-resolver.sh [OPTION]... [INPUT_FILE]
 
@@ -36,11 +36,10 @@ Write output to stdout in PEM format, both leaf and intermediate certificates.
 ## Example
 
 ```
-$ grep 'CERTIFICATE' input.crt
------BEGIN CERTIFICATE-----
------END CERTIFICATE-----
+$ grep 'BEGIN CERTIFICATE' domain.pem | wc -l
+1
 
-$ ./cert-chain-resolver.sh -o output.crt input.crt
+$ ./cert-chain-resolver.sh -o domain.bundle.pem domain.pem
 1: OU=Domain Control Validated, OU=PositiveSSL Wildcard, CN=*.xxx.com
 2: C=GB, ST=Greater Manchester, L=Salford, O=COMODO CA Limited, CN=COMODO RSA Domain Validation Secure Server CA
 3: C=GB, ST=Greater Manchester, L=Salford, O=COMODO CA Limited, CN=COMODO RSA Certification Authority
@@ -49,13 +48,8 @@ Certificate chain complete.
 Total 3 certificate(s) written.
 Verified successfully.
 
-$ grep 'CERTIFICATE' output.crt
------BEGIN CERTIFICATE-----
------END CERTIFICATE-----
------BEGIN CERTIFICATE-----
------END CERTIFICATE-----
------BEGIN CERTIFICATE-----
------END CERTIFICATE-----
+$ grep 'BEGIN CERTIFICATE' domain.bundle.pem | wc -l
+3
 ```
 
 ## Tests

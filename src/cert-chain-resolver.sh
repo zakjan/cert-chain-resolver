@@ -1,5 +1,9 @@
 #!/usr/bin/env sh
 
+# TLS certificate chain resolver
+#
+# https://github.com/zakjan/cert-chain-resolver
+#
 # Copyright (c) 2015 Jan Žák (http://zakjan.cz)
 # The MIT License (MIT).
 
@@ -37,7 +41,7 @@ cert_get_issuer_url() {
 
 
 usage() {
-  error "SSL certificate chain resolver"
+  error "TLS certificate chain resolver"
   error
   error "Usage: ./cert-chain-resolver.sh [OPTION]... [INPUT_FILE]"
   error
