@@ -46,10 +46,12 @@ usage() {
   error
   error "    -d|--der"
   error "        output DER format"
+  error "        use for IIS"
   error
   error "    -i|--intermediate-only"
   error
   error "        output intermediate certificates only, without leaf certificate"
+  error "        use for Apache < 2.4.8, AWS"
   error
   error "    -o|--output OUTPUT_FILE"
   error "        write output to OUTPUT_FILE"
@@ -108,7 +110,7 @@ main() {
     error "$((I+1)): $CURRENT_SUBJECT"
 
     # append certificate to result
-    if [[ "$I" -gt 0 || -z "$OUTPUT_INTERMEDIATE_ONLY" ]]; then
+    if [ "$I" -gt 0 ] || [ -z "$OUTPUT_INTERMEDIATE_ONLY" ]; then
       if [ -n "$OUTPUT_DER_FORMAT" ]; then
         echo "$CURRENT_CERT" | openssl x509 -inform pem -outform der >> "$OUTPUT_FILENAME"
       else

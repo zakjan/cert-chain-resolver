@@ -22,10 +22,12 @@ Write output to stdout in PEM format, both leaf and intermediate certificates.
 
     -d|--der
         output DER format
+        use for IIS
 
     -i|--intermediate-only
 
         output intermediate certificates only, without leaf certificate
+        use for Apache < 2.4.8, AWS
 
     -o|--output OUTPUT_FILE
         write output to OUTPUT_FILE
