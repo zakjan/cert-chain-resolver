@@ -85,10 +85,18 @@ parse_opts() {
       -i|--intermediate-only) OUTPUT_INTERMEDIATE_ONLY=1; shift;;
       -o|--output) OUTPUT_FILENAME="$2"; shift 2;;
       -h|--help) usage; return 1;;
-      -*) echo "Unknown option $1" >&2; return 1;;
-      *) INPUT_FILENAME="$1"; shift;;
+      -*) error "Unknown option $1"; return 1;;
+      *) break;;
     esac
   done
+
+  if [ -n "$1" ]; then
+    INPUT_FILENAME="$1"
+  fi
+
+  if [ -n "$2" ]; then
+    OUTPUT_FILENAME="$2"
+  fi
 }
 
 main() {
@@ -135,7 +143,6 @@ main() {
   done
 
 
-  error
   error "Certificate chain complete."
   error "Total $((I+1)) certificate(s) found."
 }
