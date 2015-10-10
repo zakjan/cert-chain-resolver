@@ -39,10 +39,10 @@ cert_get_issuer_url() {
 usage() {
   error "SSL certificate chain resolver"
   error
-  error "Usage: ./cert-chain-resolver.sh [OPTION] [FILE]"
+  error "Usage: ./cert-chain-resolver.sh [OPTION]... [INPUT_FILE]"
   error
-  error "Input certificate is from FILE or stdin, it can be in either DER or PEM format."
-  error "Output certificate is to stdout in PEM format by default."
+  error "Read input from INPUT_FILE or stdin, in either DER or PEM format."
+  error "Write output to stdout in PEM format, both leaf and intermediate certificates."
   error
   error "    -d|--der"
   error "        output DER format"
@@ -51,8 +51,8 @@ usage() {
   error
   error "        output intermediate certificates only, without leaf certificate"
   error
-  error "    -o|--output"
-  error "        output filename"
+  error "    -o|--output OUTPUT_FILE"
+  error "        write output to OUTPUT_FILE"
 }
 
 check_dependencies() {

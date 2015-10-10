@@ -15,10 +15,10 @@ This shell script downloads all intermediate CA certificates for a given SSL ser
 ```
 SSL certificate chain resolver
 
-Usage: ./cert-chain-resolver.sh [OPTION] [FILE]
+Usage: ./cert-chain-resolver.sh [OPTION]... [INPUT_FILE]
 
-Input certificate is from FILE or stdin, it can be in either DER or PEM format.
-Output certificate is to stdout in PEM format by default.
+Read input from INPUT_FILE or stdin, in either DER or PEM format.
+Write output to stdout in PEM format, both leaf and intermediate certificates.
 
     -d|--der
         output DER format
@@ -27,8 +27,8 @@ Output certificate is to stdout in PEM format by default.
 
         output intermediate certificates only, without leaf certificate
 
-    -o|--output
-        output filename
+    -o|--output OUTPUT_FILE
+        write output to OUTPUT_FILE
 ```
 
 ## Example
