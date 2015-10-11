@@ -113,8 +113,11 @@ main() {
     return 1
   fi
 
-  > "$OUTPUT_FILENAME" # clear output file
+  local CURRENT_CERT
+  local CURRENT_SUBJECT
+  local ISSUER_CERT_URL
 
+  > "$OUTPUT_FILENAME" # clear output file
 
   # extract the first certificate from input file, to make this script idempotent; normalize to PEM
   if ! CURRENT_CERT=$(cat "$INPUT_FILENAME" | cert_normalize_to_pem); then
@@ -150,7 +153,6 @@ main() {
 
     I=$((I+1))
   done
-
 
   echoerr "Certificate chain complete."
   echoerr "Total $((I+1)) certificate(s) found."
