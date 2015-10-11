@@ -7,22 +7,27 @@
 # Copyright (c) 2015 Jan Žák (http://zakjan.cz)
 # The MIT License (MIT).
 
-alias error="echo >&2"
+
 alias command_exists="type >/dev/null 2>&1"
+alias echoerr="echo >&2"
 
-
-cert_is_der() {
-  ! grep -e "-----" >/dev/null
-}
 
 cert_normalize_to_pem() {
   # bash variables can't contain binary data with null-bytes, so it needs to be stored encoded, and decoded before use
-  local CERT="$(openssl base64)"
-  if echo "$CERT" | openssl base64 -d | cert_is_der; then
-    echo "$CERT" | openssl base64 -d | openssl x509 -inform der -outform pem
-  else
-    echo "$CERT" | openssl base64 -d | openssl x509 -inform pem -outform pem # output only the first certificate
+  local INPUT="$(openssl base64)"
+
+  if CERT=$(echo "$INPUT" | openssl base64 -d | openssl x509 -inform pem -outform pem 2>/dev/null); then
+    echo "$CERT"
+    return
   fi
+
+  if CERT=$(echo "$INPUT" | openssl base64 -d | openssl x509 -inform der -outform pem 2>/dev/null); then
+    echo "$CERT"
+    return
+  fi
+
+  echoerr "Invalid certificate"
+  return 1
 }
 
 cert_pem_to_text() {
@@ -41,34 +46,34 @@ cert_get_issuer_url() {
 
 
 usage() {
-  error "SSL certificate chain resolver"
-  error
-  error "Usage: ./cert-chain-resolver.sh [OPTION]... [INPUT_FILE]"
-  error
-  error "Read certificate from stdin, or INPUT_FILE if specified. The input certificate can be in either DER or PEM format."
-  error "Write certificate bundle to stdout in PEM format, with both leaf and intermediate certificates."
-  error
-  error "    -d|--der"
-  error
-  error "        output DER format"
-  error
-  error "    -i|--intermediate-only"
-  error
-  error "        output intermediate certificates only, without leaf certificate"
-  error
-  error "    -o|--output OUTPUT_FILE"
-  error
-  error "        write output to OUTPUT_FILE"
+  echoerr "SSL certificate chain resolver"
+  echoerr
+  echoerr "Usage: ./cert-chain-resolver.sh [OPTION]... [INPUT_FILE]"
+  echoerr
+  echoerr "Read certificate from stdin, or INPUT_FILE if specified. The input certificate can be in either DER or PEM format."
+  echoerr "Write certificate bundle to stdout in PEM format, with both leaf and intermediate certificates."
+  echoerr
+  echoerr "    -d|--der"
+  echoerr
+  echoerr "        output DER format"
+  echoerr
+  echoerr "    -i|--intermediate-only"
+  echoerr
+  echoerr "        output intermediate certificates only, without leaf certificate"
+  echoerr
+  echoerr "    -o|--output OUTPUT_FILE"
+  echoerr
+  echoerr "        write output to OUTPUT_FILE"
 }
 
 check_dependencies() {
   if ! command_exists wget; then
-    error "Error: wget is required"
+    echoerr "Error: wget is required"
     return 1
   fi
 
   if ! command_exists openssl; then
-    error "Error: openssl is required"
+    echoerr "Error: openssl is required"
     return 1
   fi
 }
@@ -85,7 +90,7 @@ parse_opts() {
       -i|--intermediate-only) OUTPUT_INTERMEDIATE_ONLY=1; shift;;
       -o|--output) OUTPUT_FILENAME="$2"; shift 2;;
       -h|--help) usage; return 1;;
-      -*) error "Unknown option $1"; error "See --help for accepted options"; return 1;;
+      -*) echoerr "Unknown option $1"; echoerr "See --help for accepted options"; return 1;;
       *) break;;
     esac
   done
@@ -112,14 +117,16 @@ main() {
 
 
   # extract the first certificate from input file, to make this script idempotent; normalize to PEM
-  CURRENT_CERT=$(cat "$INPUT_FILENAME" | cert_normalize_to_pem)
+  if ! CURRENT_CERT=$(cat "$INPUT_FILENAME" | cert_normalize_to_pem); then
+    return 1
+  fi
 
   # loop over certificate chain using AIA extension, CA Issuers field
   I=0
   while true; do
     # get certificate subject
     CURRENT_SUBJECT=$(echo "$CURRENT_CERT" | cert_get_subject)
-    error "$((I+1)): $CURRENT_SUBJECT"
+    echoerr "$((I+1)): $CURRENT_SUBJECT"
 
     # append certificate to result
     if [ "$I" -gt 0 ] || [ -z "$OUTPUT_INTERMEDIATE_ONLY" ]; then
@@ -137,14 +144,16 @@ main() {
     fi
 
     # download issuer's certificate, normalize to PEM
-    CURRENT_CERT=$(wget -q -O - "$ISSUER_CERT_URL" | cert_normalize_to_pem)
+    if ! CURRENT_CERT=$(wget -q -O - "$ISSUER_CERT_URL" | cert_normalize_to_pem); then
+      return 1
+    fi
 
     I=$((I+1))
   done
 
 
-  error "Certificate chain complete."
-  error "Total $((I+1)) certificate(s) found."
+  echoerr "Certificate chain complete."
+  echoerr "Total $((I+1)) certificate(s) found."
 }
 
 main "$@"
