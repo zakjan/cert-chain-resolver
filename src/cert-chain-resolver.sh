@@ -97,8 +97,13 @@ parse_opts() {
 
   if [ -n "$1" ]; then
     INPUT_FILENAME="$1"
+  elif [ -t 0 ]; then
+    # stdin is not available
+    usage
+    return 1
   fi
 
+  # Retained for backward compatibility
   if [ -n "$2" ]; then
     OUTPUT_FILENAME="$2"
   fi
