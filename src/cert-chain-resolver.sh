@@ -125,7 +125,7 @@ main() {
   > "$OUTPUT_FILENAME" # clear output file
 
   # extract the first certificate from input file, to make this script idempotent; normalize to PEM
-  if ! CURRENT_CERT=$(cat "$INPUT_FILENAME" | cert_normalize_to_pem); then
+  if ! CURRENT_CERT=$(cert_normalize_to_pem < $INPUT_FILENAME); then
     return 1
   fi
 
