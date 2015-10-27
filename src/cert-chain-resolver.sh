@@ -6,7 +6,8 @@
 #
 # Copyright (c) 2015 Jan Žák (http://zakjan.cz)
 # The MIT License (MIT).
-
+set -eu
+IFS=$'\n\t'
 
 alias command_exists="type >/dev/null 2>&1"
 alias echoerr="echo >&2"
