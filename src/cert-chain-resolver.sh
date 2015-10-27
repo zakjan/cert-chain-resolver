@@ -6,7 +6,7 @@
 #
 # Copyright (c) 2015 Jan Žák (http://zakjan.cz)
 # The MIT License (MIT).
-set -euo pipefail
+set -eu
 IFS=$'\n\t'
 
 alias command_exists="type >/dev/null 2>&1"
