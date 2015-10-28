@@ -62,9 +62,9 @@ A server should always send a complete chain, which means concatenated all certi
 
 You should be able to fetch intermediate certificates from the issuer and concat them together by yourself, this script helps you automatize it by looping over certificate's AIA extension field.
 
-## Todo
+## TODO
 
-- Rewrite to a saner language, while keep it minimalistic in dependencies. Probably C, libssl.
+- Rewrite to a saner language, while keep it minimalistic in dependencies. Probably C, libcrypto.
 
 ## Other implementations
 
