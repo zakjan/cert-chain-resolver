@@ -14,6 +14,12 @@ alias command_exists="type >/dev/null 2>&1"
 alias echoerr="echo >&2"
 
 
+INPUT_FILENAME="/dev/stdin"
+OUTPUT_FILENAME="/dev/stdout"
+OUTPUT_DER_FORMAT=
+OUTPUT_INTERMEDIATE_ONLY=
+
+
 cert_normalize_to_pem() {
   # bash variables can't contain binary data with null-bytes, so it needs to be stored encoded, and decoded before use
   local INPUT=$(openssl base64)
@@ -81,11 +87,6 @@ check_dependencies() {
 }
 
 parse_opts() {
-  INPUT_FILENAME="/dev/stdin"
-  OUTPUT_FILENAME="/dev/stdout"
-  OUTPUT_DER_FORMAT=
-  OUTPUT_INTERMEDIATE_ONLY=
-
   while [ $# -gt 0 ]; do
     case "$1" in
       -d|--der) OUTPUT_DER_FORMAT=1; shift;;
@@ -102,19 +103,9 @@ parse_opts() {
     shift
   fi
   if [ $# -gt 0 ] && [ -n "$1" ]; then
-    # deprecated, pass output filename in -o argument instead
+    # deprecated, pass output filename in --output argument instead
     OUTPUT_FILENAME="$1"
     shift
-  fi
-
-  # check permissions
-  if ! [ -r "$INPUT_FILENAME" ]; then
-    echoerr "$INPUT_FILENAME must be readable"
-    return 1
-  fi
-  if ! [ -w "$OUTPUT_FILENAME" ]; then
-    echoerr "$OUTPUT_FILENAME must be writeable"
-    return 1
   fi
 }
 
