@@ -7,6 +7,8 @@
 # Copyright (c) 2015 Jan Žák (http://zakjan.cz)
 # The MIT License (MIT).
 
+set -eu
+
 
 alias command_exists="type >/dev/null 2>&1"
 alias echoerr="echo >&2"
@@ -14,7 +16,7 @@ alias echoerr="echo >&2"
 
 cert_normalize_to_pem() {
   # bash variables can't contain binary data with null-bytes, so it needs to be stored encoded, and decoded before use
-  local INPUT="$(openssl base64)"
+  local INPUT=$(openssl base64)
 
   if CERT=$(echo "$INPUT" | openssl base64 -d | openssl x509 -inform pem -outform pem 2>/dev/null); then
     echo "$CERT"
@@ -95,17 +97,24 @@ parse_opts() {
     esac
   done
 
-  if [ -n "$1" ]; then
+  if [ $# -gt 0 ] && [ -n "$1" ]; then
     INPUT_FILENAME="$1"
-  elif [ -t 0 ]; then
-    # stdin is not available
-    usage
-    return 1
+    shift
+  fi
+  if [ $# -gt 0 ] && [ -n "$1" ]; then
+    # deprecated, pass output filename in -o argument instead
+    OUTPUT_FILENAME="$1"
+    shift
   fi
 
-  # Retained for backward compatibility
-  if [ -n "$2" ]; then
-    OUTPUT_FILENAME="$2"
+  # check permissions
+  if ! [ -r "$INPUT_FILENAME" ]; then
+    echoerr "$INPUT_FILENAME must be readable"
+    return 1
+  fi
+  if ! [ -w "$OUTPUT_FILENAME" ]; then
+    echoerr "$OUTPUT_FILENAME must be writeable"
+    return 1
   fi
 }
 
@@ -125,7 +134,7 @@ main() {
   > "$OUTPUT_FILENAME" # clear output file
 
   # extract the first certificate from input file, to make this script idempotent; normalize to PEM
-  if ! CURRENT_CERT=$(cert_normalize_to_pem < $INPUT_FILENAME); then
+  if ! CURRENT_CERT=$(cert_normalize_to_pem < "$INPUT_FILENAME"); then
     return 1
   fi
 
