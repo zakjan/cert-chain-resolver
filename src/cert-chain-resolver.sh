@@ -22,14 +22,14 @@ OUTPUT_INTERMEDIATE_ONLY=
 
 cert_normalize_to_pem() {
   # bash variables can't contain binary data with null-bytes, so it needs to be stored encoded, and decoded before use
-  local INPUT=$(openssl base64)
+  local INPUT="$(openssl base64)"
 
-  if CERT=$(echo "$INPUT" | openssl base64 -d | openssl x509 -inform pem -outform pem 2>/dev/null); then
+  if CERT="$(echo "$INPUT" | openssl base64 -d | openssl x509 -inform pem -outform pem 2>/dev/null)"; then
     echo "$CERT"
     return
   fi
 
-  if CERT=$(echo "$INPUT" | openssl base64 -d | openssl x509 -inform der -outform pem 2>/dev/null); then
+  if CERT="$(echo "$INPUT" | openssl base64 -d | openssl x509 -inform der -outform pem 2>/dev/null)"; then
     echo "$CERT"
     return
   fi
@@ -87,7 +87,7 @@ check_dependencies() {
 }
 
 parse_opts() {
-  while [ $# -gt 0 ]; do
+  while [ "$#" -gt "0" ]; do
     case "$1" in
       -d|--der) OUTPUT_DER_FORMAT=1; shift;;
       -i|--intermediate-only) OUTPUT_INTERMEDIATE_ONLY=1; shift;;
@@ -98,11 +98,11 @@ parse_opts() {
     esac
   done
 
-  if [ $# -gt 0 ] && [ -n "$1" ]; then
+  if [ "$#" -gt "0" ] && [ -n "$1" ]; then
     INPUT_FILENAME="$1"
     shift
   fi
-  if [ $# -gt 0 ] && [ -n "$1" ]; then
+  if [ "$#" -gt "0" ] && [ -n "$1" ]; then
     # deprecated, pass output filename in --output argument instead
     OUTPUT_FILENAME="$1"
     shift
@@ -125,15 +125,15 @@ main() {
   > "$OUTPUT_FILENAME" # clear output file
 
   # extract the first certificate from input file, to make this script idempotent; normalize to PEM
-  if ! CURRENT_CERT=$(cert_normalize_to_pem < "$INPUT_FILENAME"); then
+  if ! CURRENT_CERT="$(cert_normalize_to_pem < "$INPUT_FILENAME")"; then
     return 1
   fi
 
   # loop over certificate chain using AIA extension, CA Issuers field
-  I=0
+  I="0"
   while true; do
     # get certificate subject
-    CURRENT_SUBJECT=$(echo "$CURRENT_CERT" | cert_get_subject)
+    CURRENT_SUBJECT="$(echo "$CURRENT_CERT" | cert_get_subject)"
     echoerr "$((I+1)): $CURRENT_SUBJECT"
 
     # append certificate to result
@@ -146,17 +146,17 @@ main() {
     fi
 
     # get issuer's certificate URL
-    ISSUER_CERT_URL=$(echo "$CURRENT_CERT" | cert_get_issuer_url)
+    ISSUER_CERT_URL="$(echo "$CURRENT_CERT" | cert_get_issuer_url)"
     if [ -z "$ISSUER_CERT_URL" ]; then
       break
     fi
 
     # download issuer's certificate, normalize to PEM
-    if ! CURRENT_CERT=$(wget -q -O - "$ISSUER_CERT_URL" | cert_normalize_to_pem); then
+    if ! CURRENT_CERT="$(wget -q -O - "$ISSUER_CERT_URL" | cert_normalize_to_pem)"; then
       return 1
     fi
 
-    I=$((I+1))
+    I="$((I+1))"
   done
 
   echoerr "Certificate chain complete."

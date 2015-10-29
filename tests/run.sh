@@ -3,9 +3,9 @@
 set -u
 
 
-DIR=$(dirname $0)
+DIR="$(dirname $0)"
 CMD="$DIR/../src/cert-chain-resolver.sh"
-TEMP_FILE=$(mktemp)
+TEMP_FILE="$(mktemp)"
 
 
 (
@@ -46,9 +46,9 @@ TEMP_FILE=$(mktemp)
   # it should detect invalid certificate
   (! echo "xxx" | $CMD)
 )
-STATUS=$?
+STATUS="$?"
 
 
 rm -f "$TEMP_FILE"
 
-exit $STATUS
+exit "$STATUS"
