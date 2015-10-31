@@ -1,3 +1,4 @@
 test:
   override:
+    - cd cert-chain-resolver && go install
     - tests/run.sh

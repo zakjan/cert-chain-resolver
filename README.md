@@ -3,48 +3,51 @@
 [![CircleCI](https://img.shields.io/circleci/project/zakjan/cert-chain-resolver.svg)](https://circleci.com/gh/zakjan/cert-chain-resolver)
 [![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](https://tldrlegal.com/license/mit-license)
 
-This shell script downloads all intermediate CA certificates for a given SSL server certificate. It can help you fix the *incomplete certificate chain* issue, also reported as *Extra download* by [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/).
-
-## Dependencies
-
-- wget
-- OpenSSL
+This application downloads all intermediate CA certificates for a given SSL server certificate. It can help you fix the *incomplete certificate chain* issue, also reported as *Extra download* by [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/).
 
 ## Usage
 
 ```
-SSL certificate chain resolver
+Usage:
+  cert-chain-resolver [OPTIONS] [INPUT_FILE] [OUTPUT_FILE]
 
-Usage: ./cert-chain-resolver.sh [OPTION]... [INPUT_FILE]
+Application Options:
+  -o, --output=OUTPUT_FILE    Output filename (default: stdout)
+  -d, --der                   Output DER format
+  -i, --intermediate-only     Output intermediate certificates only
 
-Read certificate from stdin, or INPUT_FILE if specified. The input certificate can be in either DER or PEM format.
-Write certificate bundle to stdout in PEM format, with both leaf and intermediate certificates.
+Help Options:
+  -h, --help                  Show this help message
 
-    -d|--der
-
-        output DER format
-
-    -i|--intermediate-only
-
-        output intermediate certificates only, without leaf certificate
-
-    -o|--output OUTPUT_FILE
-
-        write output to OUTPUT_FILE
+Arguments:
+  INPUT_FILE:                 Input filename (default: stdin)
+  OUTPUT_FILE:                Output filename (deprecated, use -o option instead)
 ```
 
-## Example
+### Example
 
 ```
-$ ./cert-chain-resolver.sh -o domain.bundle.pem domain.pem
-1: OU=Domain Control Validated, OU=PositiveSSL Wildcard, CN=*.xxx.com
-2: C=GB, ST=Greater Manchester, L=Salford, O=COMODO CA Limited, CN=COMODO RSA Domain Validation Secure Server CA
-3: C=GB, ST=Greater Manchester, L=Salford, O=COMODO CA Limited, CN=COMODO RSA Certification Authority
+$ cert-chain-resolver -o domain.bundle.pem domain.pem
+1: *.xxx.com
+2: COMODO RSA Domain Validation Secure Server CA
+3: COMODO RSA Certification Authority
 Certificate chain complete.
 Total 3 certificate(s) found.
 ```
 
-## Tests
+## Development
+
+### Dependencies
+
+* Golang
+
+### Build
+
+```
+go install
+```
+
+### Tests
 
 ```
 tests/run.sh
@@ -62,16 +65,13 @@ A server should always send a complete chain, which means concatenated all certi
 
 You should be able to fetch intermediate certificates from the issuer and concat them together by yourself, this script helps you automatize it by looping over certificate's AIA extension field.
 
-## TODO
+### Other implementations
 
-- Rewrite to a saner language, while keep it minimalistic in dependencies. Probably C, libcrypto.
+* [previous version](https://github.com/zakjan/cert-chain-resolver/tree/shell) (Shell)
+* [https://certificatechain.io/](https://certificatechain.io/) (webservice)
+* [freekmurze/ssl-certificate-chain-resolver](https://github.com/freekmurze/ssl-certificate-chain-resolver) (PHP)
 
-## Other implementations
-
-- [https://certificatechain.io/](https://certificatechain.io/) (webservice)
-- [freekmurze/ssl-certificate-chain-resolver](https://github.com/freekmurze/ssl-certificate-chain-resolver) (PHP)
-
-## Licence
+### Licence
 
 The MIT License (MIT). See [LICENCE](LICENCE) file for more information. [TL;DR](https://tldrlegal.com/license/mit-license)
 

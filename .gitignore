@@ -1,2 +1,4 @@
 .idea
 *.iml
+
+/cert-chain-resolver/cert-chain-resolver

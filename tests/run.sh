@@ -4,7 +4,7 @@ set -u
 
 
 DIR="$(dirname $0)"
-CMD="$DIR/../src/cert-chain-resolver.sh"
+CMD="$GOPATH/bin/cert-chain-resolver"
 TEMP_FILE="$(mktemp)"
 
 
