@@ -7,8 +7,8 @@ dependencies:
     - go get github.com/jessevdk/go-flags
     - mkdir -p "$GO_PROJECT_PATH"
     - rsync -a --delete ./ "$GO_PROJECT_PATH"
-    - cd "$GO_PROJECT_PATH" && go install
 
 test:
   override:
+    - cd "$GO_PROJECT_PATH/cert-chain-resolver" && go install
     - tests/run.sh
