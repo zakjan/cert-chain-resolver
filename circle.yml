@@ -1,4 +1,14 @@
+machine:
+  environment:
+    GO_PROJECT_PATH: "$GOPATH/src/github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
+
+dependencies:
+  override:
+    - go get github.com/jessevdk/go-flags
+    - mkdir -p "$GO_PROJECT_PATH"
+    - rsync -a --delete ./ "$GO_PROJECT_PATH"
+    - cd "$GO_PROJECT_PATH" && go install
+
 test:
   override:
-    - cd cert-chain-resolver && go install
     - tests/run.sh
