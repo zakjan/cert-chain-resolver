@@ -39,12 +39,12 @@ Total 3 certificate(s) found.
 
 ### Dependencies
 
-* Golang
+* Go
 
 ### Build
 
 ```
-go install
+cd cert-chain-resolver && go install
 ```
 
 ### Tests
@@ -67,7 +67,7 @@ You should be able to fetch intermediate certificates from the issuer and concat
 
 ### Other implementations
 
-* [previous version](https://github.com/zakjan/cert-chain-resolver/tree/shell) (Shell)
+* [stable version](https://github.com/zakjan/cert-chain-resolver) (Shell)
 * [https://certificatechain.io/](https://certificatechain.io/) (webservice)
 * [freekmurze/ssl-certificate-chain-resolver](https://github.com/freekmurze/ssl-certificate-chain-resolver) (PHP)
 
