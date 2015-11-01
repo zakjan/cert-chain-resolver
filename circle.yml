@@ -8,5 +8,8 @@ dependencies:
 
 test:
   override:
-    - build-all.sh
+    - ./build-all.sh
+
+    - ./build.sh
     - tests/run.sh
+    - rm -f out/cert-chain-resolver
