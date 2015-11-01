@@ -5,6 +5,8 @@
 
 This shell script downloads all intermediate CA certificates for a given SSL server certificate. It can help you fix the *incomplete certificate chain* issue, also reported as *Extra download* by [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/).
 
+Also check [https://github.com/zakjan/cert-chain-resolver/tree/golang](golang) branch for... guess what.
+
 ## Dependencies
 
 - wget
