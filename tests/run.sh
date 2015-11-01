@@ -39,10 +39,6 @@ TEMP_FILE="$(mktemp)"
   $CMD < "$DIR/comodo.crt" > "$TEMP_FILE"
   diff "$TEMP_FILE" "$DIR/comodo.bundle.crt"
 
-  # it should output certificate bundle in PEM format, with output to second argument (backward compatibility)
-  $CMD "$DIR/comodo.crt" "$TEMP_FILE"
-  diff "$TEMP_FILE" "$DIR/comodo.bundle.crt"
-
   # it should detect invalid certificate
   (! echo "xxx" | $CMD)
 )
