@@ -5,7 +5,7 @@
 
 This shell script downloads all intermediate CA certificates for a given SSL server certificate. It can help you fix the *incomplete certificate chain* issue, also reported as *Extra download* by [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/).
 
-Also check [https://github.com/zakjan/cert-chain-resolver/tree/golang](golang) branch for... guess what.
+Also check [golang](https://github.com/zakjan/cert-chain-resolver/tree/golang) branch for... guess what.
 
 ## Dependencies
 
@@ -63,10 +63,6 @@ A certificate can contain a special *Authority Information Access* extension ([R
 A server should always send a complete chain, which means concatenated all certificates from the certificate to the trusted root certificate (exclusive, in this order), to prevent such issues. Note, the trusted root certificate should not be there, as it is already included in the system’s root certificate store.
 
 You should be able to fetch intermediate certificates from the issuer and concat them together by yourself, this script helps you automatize it by looping over certificate's AIA extension field.
-
-## TODO
-
-- Rewrite to a saner language, while keep it minimalistic in dependencies. Probably C, libcrypto.
 
 ## Other implementations
 
