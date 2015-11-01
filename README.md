@@ -9,7 +9,7 @@ This application downloads all intermediate CA certificates for a given SSL serv
 
 ```
 Usage:
-  cert-chain-resolver [OPTIONS] [INPUT_FILE] [OUTPUT_FILE]
+  cert-chain-resolver [OPTIONS] [INPUT_FILE]
 
 Application Options:
   -o, --output=OUTPUT_FILE    Output filename (default: stdout)
@@ -21,7 +21,6 @@ Help Options:
 
 Arguments:
   INPUT_FILE:                 Input filename (default: stdin)
-  OUTPUT_FILE:                Output filename (deprecated, use -o option instead)
 ```
 
 ### Example
