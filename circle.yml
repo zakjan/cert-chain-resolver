@@ -1,8 +1,12 @@
+general:
+  artifacts:
+    - out
+
 dependencies:
   override:
     - go get github.com/jessevdk/go-flags
 
 test:
   override:
-    - cd cert-chain-resolver && go build
+    - build-all.sh
     - tests/run.sh
