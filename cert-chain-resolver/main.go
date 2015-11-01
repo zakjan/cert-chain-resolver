@@ -36,9 +36,8 @@ func run() error {
 }
 
 func main() {
-	err := run()
-	if err != nil {
-		fmt.Println(err)
+	if err := run(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 }

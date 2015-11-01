@@ -40,6 +40,7 @@ Total 3 certificate(s) found.
 ### Dependencies
 
 * Go
+* `go get github.com/jessevdk/go-flags`
 
 ### Build
 

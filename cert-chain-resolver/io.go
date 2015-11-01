@@ -4,9 +4,9 @@ import (
 	"bufio"
 	"crypto/x509"
 	"encoding/pem"
+	"errors"
 	"io"
 	"io/ioutil"
-	"errors"
 )
 
 func ParseCertificate(data []byte) (*x509.Certificate, error) {
