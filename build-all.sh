@@ -11,7 +11,7 @@ for GOOS in linux darwin windows; do
     echo "Building ${GOOS}_${GOARCH}"
 
     OUT="cert-chain-resolver"
-    if [ "$GOOS" == "windows" ]; then
+    if [ "$GOOS" = "windows" ]; then
         OUT="${OUT}.exe"
     fi
 
