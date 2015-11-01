@@ -23,7 +23,7 @@ Arguments:
   INPUT_FILE:                 Input filename (default: stdin)
 ```
 
-### Example
+## Example
 
 ```
 $ cert-chain-resolver -o domain.bundle.pem domain.pem
@@ -34,20 +34,19 @@ Certificate chain complete.
 Total 3 certificate(s) found.
 ```
 
-## Development
+## Build
 
-### Dependencies
+Dependencies:
 
 * Go
 * `go get github.com/jessevdk/go-flags`
 
-### Build
-
 ```
-cd cert-chain-resolver && go install
+./build.sh # development
+./build-all.sh # release
 ```
 
-### Tests
+## Tests
 
 ```
 tests/run.sh
