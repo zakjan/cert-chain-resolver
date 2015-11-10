@@ -16,8 +16,8 @@ alias echoerr="echo >&2"
 
 INPUT_FILENAME="/dev/stdin"
 OUTPUT_FILENAME="/dev/stdout"
-OUTPUT_DER_FORMAT=
-OUTPUT_INTERMEDIATE_ONLY=
+OUTPUT_DER_FORMAT=""
+OUTPUT_INTERMEDIATE_ONLY=""
 
 
 cert_normalize_to_pem() {
@@ -44,11 +44,11 @@ cert_pem_to_text() {
 }
 
 cert_get_subject() {
-  cert_pem_to_text | awk 'BEGIN {FS="Subject: "} NF==2 {print $2}'
+  cert_pem_to_text | awk 'BEGIN {FS="Subject: "} NF==2 {print $2; exit}'
 }
 
 cert_get_issuer_url() {
-  cert_pem_to_text | awk 'BEGIN {FS="CA Issuers - URI:"} NF==2 {print $2}'
+  cert_pem_to_text | awk 'BEGIN {FS="CA Issuers - URI:"} NF==2 {print $2; exit}'
 }
 
 
