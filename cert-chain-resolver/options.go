@@ -22,7 +22,7 @@ type Options struct {
 	OutputIntermediateOnly bool
 }
 
-func GetOptions() (*Options, error) {
+func GetOptions() (Options, error) {
 	var (
 		flagOptions FlagOptions
 		options     Options
@@ -30,13 +30,13 @@ func GetOptions() (*Options, error) {
 
 	flagsParser := flags.NewParser(&flagOptions, flags.HelpFlag|flags.PassDoubleDash)
 	if _, err := flagsParser.Parse(); err != nil {
-		return nil, err
+		return Options{}, err
 	}
 
 	if flagOptions.Args.InputFilename != "" {
 		reader, err := os.Open(flagOptions.Args.InputFilename)
 		if err != nil {
-			return nil, err
+			return Options{}, err
 		}
 
 		options.InputReader = reader
@@ -47,7 +47,7 @@ func GetOptions() (*Options, error) {
 	if flagOptions.OutputFilename != "" {
 		writer, err := os.Create(flagOptions.OutputFilename)
 		if err != nil {
-			return nil, err
+			return Options{}, err
 		}
 
 		options.OutputWriter = writer
@@ -58,5 +58,5 @@ func GetOptions() (*Options, error) {
 	options.OutputDerFormat = flagOptions.OutputDerFormat
 	options.OutputIntermediateOnly = flagOptions.OutputIntermediateOnly
 
-	return &options, nil
+	return options, nil
 }

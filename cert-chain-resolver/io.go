@@ -47,7 +47,7 @@ func ReadCertificate(reader io.Reader) (*x509.Certificate, error) {
 	return cert, nil
 }
 
-func WriteCertificate(writer io.Writer, certs []*x509.Certificate, options *Options) error {
+func WriteCertificate(writer io.Writer, certs []*x509.Certificate, options Options) error {
 	bufWriter := bufio.NewWriter(writer)
 
 	for i, cert := range certs {
