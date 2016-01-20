@@ -7,7 +7,7 @@ This application downloads all intermediate CA certificates for a given SSL serv
 
 See Releases for prebuilt binaries or build it yourself.
 
-NOTE: In case of troubles with Go you can try the deprecated shell script in [shell](https://github.com/zakjan/cert-chain-resolver/tree/shell) branch.
+NOTE: In case of any troubles with Go you can try the deprecated shell script in [shell](https://github.com/zakjan/cert-chain-resolver/tree/shell) branch.
 
 ## Usage
 
@@ -69,7 +69,7 @@ You should be able to fetch intermediate certificates from the issuer and concat
 
 ### Other implementations
 
-* [deprecated script](https://github.com/zakjan/cert-chain-resolver) (Shell)
+* [deprecated shell script](https://github.com/zakjan/cert-chain-resolver) (shell)
 * [https://certificatechain.io/](https://certificatechain.io/) (webservice)
 * [freekmurze/ssl-certificate-chain-resolver](https://github.com/freekmurze/ssl-certificate-chain-resolver) (PHP)
 
