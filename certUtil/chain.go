@@ -1,11 +1,12 @@
-package main
+package certUtil
 
 import (
 	"crypto/x509"
+	"io/ioutil"
 	"net/http"
 )
 
-func ResolveCertificateChain(cert *x509.Certificate) ([]*x509.Certificate, error) {
+func FetchCertificateChain(cert *x509.Certificate) ([]*x509.Certificate, error) {
 	var certs []*x509.Certificate
 
 	certs = append(certs, cert)
@@ -21,7 +22,12 @@ func ResolveCertificateChain(cert *x509.Certificate) ([]*x509.Certificate, error
 			return nil, err
 		}
 
-		cert, err := ReadCertificate(resp.Body)
+		data, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return nil, err
+		}
+
+		cert, err := DecodeCertificate(data)
 		if err != nil {
 			return nil, err
 		}

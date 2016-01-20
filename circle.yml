@@ -4,12 +4,9 @@ general:
 
 dependencies:
   override:
-    - go get github.com/jessevdk/go-flags
+    - ./circle.sh dependencies
 
 test:
   override:
-    - ./build-all.sh
-
-    - ./build.sh
-    - tests/run.sh
-    - rm -f out/cert-chain-resolver
+    - ./circle.sh build
+    - ./circle.sh release
