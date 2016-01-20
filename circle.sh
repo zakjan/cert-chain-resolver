@@ -4,14 +4,16 @@ set -eu
 
 
 dependencies() {
-    go get github.com/codegangsta/cli
-    go get github.com/stretchr/testify/assert
+    go get github.com/Masterminds/glide
+    glide install
 }
 
 build() {
-    go test ./...
-
     go build -o out/cert-chain-resolver
+}
+
+test() {
+    go test ./...
     tests/run.sh
 }
 
@@ -40,6 +42,8 @@ case "$1" in
         dependencies;;
     build)
         build;;
+    test)
+        test;;
     release)
         release;;
 esac
