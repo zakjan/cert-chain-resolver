@@ -3,36 +3,38 @@
 set -eu
 
 
+NAME="${CIRCLE_PROJECT_REPONAME}"
+
+
 dependencies() {
-    GO_PROJECT_HOME="/home/ubuntu/.go_workspace/src/github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}"
+    go get github.com/Masterminds/glide
+    glide install
+
+    GO_PROJECT_HOME="/home/ubuntu/.go_workspace/src/$(glide name)"
 
     mkdir -p "$GO_PROJECT_HOME"
     rsync -a --delete . "$GO_PROJECT_HOME"
-
-    go get github.com/Masterminds/glide
-    glide install
 }
 
 build() {
-    go build -o out/cert-chain-resolver
+    go build -o "out/${NAME}"
 }
 
 test() {
-    go test ./...
+    go test $(glide novendor)
     tests/run.sh
 }
 
 release() {
-    NAME=""
-    GOARCH="amd64"
-
     rm -rf out
     mkdir out
+
+    GOARCH="amd64"
 
     for GOOS in linux darwin windows; do
         echo "Building ${GOOS}_${GOARCH}"
 
-        OUT="${CIRCLE_PROJECT_REPONAME}_${GOOS}_${GOARCH}"
+        OUT="${NAME}_${GOOS}_${GOARCH}"
         if [ "$GOOS" = "windows" ]; then
             OUT="${OUT}.exe"
         fi
