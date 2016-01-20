@@ -5,14 +5,16 @@
 
 This application downloads all intermediate CA certificates for a given SSL server certificate. It can help you fix the *incomplete certificate chain* issue, also reported as *Extra download* by [Qualys SSL Server Test](https://www.ssllabs.com/ssltest/).
 
+NOTE: In case of troubles with Go you can try the alternative shell script in [shell](https://github.com/zakjan/cert-chain-resolver/tree/shell) branch.
+
 ## Usage
 
 ```
 NAME:
-   cert-chain-resolver_linux_amd64 - SSL certificate chain resolver
+   cert-chain-resolver - SSL certificate chain resolver
 
 USAGE:
-   cert-chain-resolver_linux_amd64 [global options] [INPUT_FILE]
+   cert-chain-resolver [global options] [INPUT_FILE]
 
 GLOBAL OPTIONS:
    --output, -o "OUTPUT_FILE"   output filename (default: stdout)
@@ -36,9 +38,9 @@ Total 3 certificate(s) found.
 Dependencies:
 
 * Go
-* GO15VENDOREXPERIMENT=1
 
 ```
+export GO15VENDOREXPERIMENT=1
 go get github.com/Masterminds/glide
 glide install
 go build

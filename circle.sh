@@ -30,12 +30,16 @@ release() {
     for GOOS in linux darwin windows; do
         echo "Building ${GOOS}_${GOARCH}"
 
-        OUT="${CIRCLE_PROJECT_REPONAME}_${GOOS}_${GOARCH}"
+        DIR="out/${CIRCLE_PROJECT_REPONAME}_${GOOS}_${GOARCH}"
+        OUT="${DIR}/${CIRCLE_PROJECT_REPONAME}"
         if [ "$GOOS" = "windows" ]; then
             OUT="${OUT}.exe"
         fi
 
-        GOOS="$GOOS" GOARCH="$GOARCH" go build -o "out/${OUT}"
+        GOOS="$GOOS" GOARCH="$GOARCH" go build -o "$OUT"
+
+        tar -czf "$DIR.tar.gz" "$DIR"
+        rm -rf "$DIR"
     done
 }
 
