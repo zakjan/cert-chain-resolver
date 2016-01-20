@@ -4,6 +4,8 @@ set -eu
 
 
 dependencies() {
+    rsync -a --delete . "/home/ubuntu/.go_workspace/src/github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}"
+
     go get github.com/Masterminds/glide
     glide install
 }
@@ -18,7 +20,7 @@ test() {
 }
 
 release() {
-    NAME="cert-chain-resolver"
+    NAME="${CIRCLE_PROJECT_REPONAME}"
     GOARCH="amd64"
 
     rm -rf out

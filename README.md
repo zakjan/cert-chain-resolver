@@ -8,19 +8,16 @@ This application downloads all intermediate CA certificates for a given SSL serv
 ## Usage
 
 ```
-Usage:
-  cert-chain-resolver [OPTIONS] [INPUT_FILE]
+NAME:
+   cert-chain-resolver_linux_amd64 - SSL certificate chain resolver
 
-Application Options:
-  -o, --output=OUTPUT_FILE    Output filename (default: stdout)
-  -d, --der                   Output DER format
-  -i, --intermediate-only     Output intermediate certificates only
+USAGE:
+   cert-chain-resolver_linux_amd64 [global options] [INPUT_FILE]
 
-Help Options:
-  -h, --help                  Show this help message
-
-Arguments:
-  INPUT_FILE:                 Input filename (default: stdin)
+GLOBAL OPTIONS:
+   --output, -o "OUTPUT_FILE"   output filename (default: stdout)
+   --intermediate-only, -i      output intermediate certificates only
+   --der, -d                    output DER format
 ```
 
 ## Example
@@ -39,16 +36,18 @@ Total 3 certificate(s) found.
 Dependencies:
 
 * Go
-* `go get github.com/jessevdk/go-flags`
+* GO15VENDOREXPERIMENT=1
 
 ```
-./build.sh # development
-./build-all.sh # release
+go get github.com/Masterminds/glide
+glide install
+go build -o out/cert-chain-resolver
 ```
 
 ## Tests
 
 ```
+go test ./...
 tests/run.sh
 ```
 
