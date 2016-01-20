@@ -4,7 +4,10 @@ set -eu
 
 
 dependencies() {
-    rsync -a --delete . "/home/ubuntu/.go_workspace/src/github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}"
+    GO_PROJECT_HOME="/home/ubuntu/.go_workspace/src/github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}"
+
+    mkdir -p "$GO_PROJECT_HOME"
+    rsync -a --delete . "$GO_PROJECT_HOME"
 
     go get github.com/Masterminds/glide
     glide install
@@ -20,7 +23,7 @@ test() {
 }
 
 release() {
-    NAME="${CIRCLE_PROJECT_REPONAME}"
+    NAME=""
     GOARCH="amd64"
 
     rm -rf out
@@ -29,7 +32,7 @@ release() {
     for GOOS in linux darwin windows; do
         echo "Building ${GOOS}_${GOARCH}"
 
-        OUT="${NAME}_${GOOS}_${GOARCH}"
+        OUT="${CIRCLE_PROJECT_REPONAME}_${GOOS}_${GOARCH}"
         if [ "$GOOS" = "windows" ]; then
             OUT="${OUT}.exe"
         fi
