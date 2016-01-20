@@ -41,13 +41,13 @@ Dependencies:
 ```
 go get github.com/Masterminds/glide
 glide install
-go build -o out/cert-chain-resolver
+go build
 ```
 
 ## Tests
 
 ```
-go test ./...
+go test $(glide novendor)
 tests/run.sh
 ```
 

@@ -3,4 +3,5 @@
 
 /vendor
 
+/cert-chain-resolver
 /out

@@ -101,7 +101,6 @@ func main() {
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:        "output, o",
-			Value:       "OUTPUT_FILE",
 			Usage:       "output filename (default: stdout)",
 			Destination: &outputFilename,
 		},

@@ -3,9 +3,6 @@
 set -eu
 
 
-NAME="${CIRCLE_PROJECT_REPONAME}"
-
-
 dependencies() {
     go get github.com/Masterminds/glide
     glide install
@@ -17,7 +14,7 @@ dependencies() {
 }
 
 build() {
-    go build -o "out/${NAME}"
+    go build
 }
 
 test() {
@@ -26,7 +23,6 @@ test() {
 }
 
 release() {
-    rm -rf out
     mkdir out
 
     GOARCH="amd64"
@@ -34,7 +30,7 @@ release() {
     for GOOS in linux darwin windows; do
         echo "Building ${GOOS}_${GOARCH}"
 
-        OUT="${NAME}_${GOOS}_${GOARCH}"
+        OUT="${CIRCLE_PROJECT_REPONAME}_${GOOS}_${GOARCH}"
         if [ "$GOOS" = "windows" ]; then
             OUT="${OUT}.exe"
         fi

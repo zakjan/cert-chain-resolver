@@ -4,7 +4,7 @@ set -u
 
 
 DIR="$(dirname $0)"
-CMD="${DIR}/../out/cert-chain-resolver"
+CMD="${DIR}/../cert-chain-resolver"
 TEMP_FILE="$(mktemp)"
 
 
