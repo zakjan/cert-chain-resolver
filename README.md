@@ -42,8 +42,8 @@ Dependencies:
 * Go
 
 ```
-export GO15VENDOREXPERIMENT=1
 go get github.com/Masterminds/glide
+export GO15VENDOREXPERIMENT=1
 glide install
 go build
 ```
