@@ -115,7 +115,7 @@ func main() {
 			Destination: &outputDerFormat,
 		},
 	}
-	app.Action = func(c *cli.Context) {
+	app.Action = func(c *cli.Context) error {
 		args := c.Args()
 		if len(args) > 0 {
 			inputFilename = args[0]
@@ -126,6 +126,8 @@ func main() {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
+
+		return nil
 	}
 	app.Run(os.Args)
 }
