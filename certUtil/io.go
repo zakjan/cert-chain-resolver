@@ -5,6 +5,7 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"errors"
+	"github.com/fullsailor/pkcs7"
 )
 
 var pemStart = []byte("-----BEGIN ")
@@ -62,11 +63,16 @@ func DecodeCertificate(data []byte) (*x509.Certificate, error) {
 	}
 
 	cert, err := x509.ParseCertificate(data)
-	if err != nil {
-		return nil, errors.New("Invalid certificate.")
+	if err == nil {
+		return cert, nil
 	}
 
-	return cert, nil
+	p, err := pkcs7.Parse(data)
+	if err == nil {
+		return p.Certificates[0], nil
+	}
+
+	return nil, errors.New("Invalid certificate.")
 }
 
 func EncodeCertificate(cert *x509.Certificate) []byte {

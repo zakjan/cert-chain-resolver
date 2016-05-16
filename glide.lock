@@ -1,8 +1,10 @@
-hash: 83bd6d9434addfaca757f298d2f635aaa9b94e178e82feed1bd08fd553ec0fa6
-updated: 2016-05-25T12:20:22.818436643+02:00
+hash: ec66c05f6ee9f69871c7058741ee69a992a28c10e4a5e3b5972a9832487e45b6
+updated: 2016-05-25T17:52:38.241320285-03:00
 imports:
 - name: github.com/codegangsta/cli
   version: c31a7975863e7810c92e2e288a9ab074f9a88f29
+- name: github.com/fullsailor/pkcs7
+  version: 2585af45975b11f1d7502bb6c01556c29efb54ce
 - name: github.com/stretchr/testify
   version: f390dcf405f7b83c997eac1b06768bb9f44dec18
   subpackages:

@@ -51,6 +51,10 @@ TEMP_FILE="$(mktemp)"
     $CMD -s < "$DIR/multiple-issuer-urls.crt" > "$TEMP_FILE"
     diff "$TEMP_FILE" "$DIR/multiple-issuer-urls.bundle.crt"
 
+    # DST Root CA X3, PKCS#7 package
+    $CMD < "$DIR/dstrootcax3.p7c" > "$TEMP_FILE"
+    diff "$TEMP_FILE" "$DIR/dstrootcax3.pem"
+
     # it should detect invalid certificate
     (! echo "xxx" | $CMD)
 )
