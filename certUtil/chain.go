@@ -37,3 +37,24 @@ func FetchCertificateChain(cert *x509.Certificate) ([]*x509.Certificate, error) 
 
 	return certs, nil
 }
+
+func AddRootCA(certs []*x509.Certificate) ([]*x509.Certificate, error) {
+	lastCert := certs[len(certs)-1]
+
+	chains, err := lastCert.Verify(x509.VerifyOptions{})
+	if err != nil {
+		if _, e := err.(x509.UnknownAuthorityError); e {
+			return certs, nil
+		}
+		return nil, err
+	}
+
+	for _, cert := range chains[0] {
+		if lastCert.Equal(cert) {
+			continue
+		}
+		certs = append(certs, cert)
+	}
+
+	return certs, nil
+}
