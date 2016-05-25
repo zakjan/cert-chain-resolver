@@ -2,10 +2,6 @@ general:
   artifacts:
     - out
 
-machine:
-  environment:
-    GO15VENDOREXPERIMENT: 1
-
 dependencies:
   override:
     - ./circle.sh dependencies

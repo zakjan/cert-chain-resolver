@@ -39,11 +39,10 @@ Total 3 certificate(s) found.
 
 Dependencies:
 
-* Go
+* Go 1.6
 
 ```
 go get github.com/Masterminds/glide
-export GO15VENDOREXPERIMENT=1
 glide install
 go build
 ```
