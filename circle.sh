@@ -3,26 +3,30 @@
 set -eu
 
 
+GO_PROJECT_HOME="/home/ubuntu/.go_workspace/src/${CIRCLE_REPOSITORY_URL/https:\/\//}"
+
 dependencies() {
+    mkdir -p "${GO_PROJECT_HOME}"
+    rsync -a --delete . "${GO_PROJECT_HOME}"
+
+    cd "${GO_PROJECT_HOME}"
     go get github.com/Masterminds/glide
     glide install
-
-    GO_PROJECT_HOME="/home/ubuntu/.go_workspace/src/$(glide name)"
-
-    mkdir -p "$GO_PROJECT_HOME"
-    rsync -a --delete . "$GO_PROJECT_HOME"
 }
 
 build() {
+    cd "${GO_PROJECT_HOME}"
     go build
 }
 
 test() {
+    cd "${GO_PROJECT_HOME}"
     go test $(glide novendor)
     tests/run.sh
 }
 
 release() {
+    cd "${GO_PROJECT_HOME}"
     mkdir out
 
     GOARCH="amd64"
@@ -32,15 +36,16 @@ release() {
 
         DIR="${CIRCLE_PROJECT_REPONAME}_${GOOS}_${GOARCH}"
         OUT="out/${DIR}/${CIRCLE_PROJECT_REPONAME}"
-        if [ "$GOOS" = "windows" ]; then
+        if [ "${GOOS}" = "windows" ]; then
             OUT="${OUT}.exe"
         fi
 
-        GOOS="$GOOS" GOARCH="$GOARCH" go build -o "$OUT"
+        GOOS="${GOOS}" GOARCH="${GOARCH}" go build -o "${OUT}"
 
         cd out
-        tar -czf "$DIR.tar.gz" "$DIR"
-        rm -rf "$DIR"
+        tar -czf "${DIR}.tar.gz" "${DIR}"
+        rm -rf "${DIR}"
+        cp "${DIR}.tar.gz" "${CIRCLE_ARTIFACTS}"
         cd ..
     done
 }

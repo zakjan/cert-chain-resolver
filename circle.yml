@@ -1,7 +1,3 @@
-general:
-  artifacts:
-    - out
-
 dependencies:
   override:
     - ./circle.sh dependencies
