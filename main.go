@@ -34,7 +34,8 @@ func openOutputFile(filename string) (*os.File, error) {
 	return file, nil
 }
 
-func run(inputFilename string, outputFilename string, outputIntermediateOnly bool, outputDerFormat bool) error {
+func run(inputFilename string, outputFilename string, outputIntermediateOnly bool,
+	outputDerFormat bool, includeSystem bool) error {
 	inputFile, err := openInputFile(inputFilename)
 	if err != nil {
 		return err
@@ -58,6 +59,13 @@ func run(inputFilename string, outputFilename string, outputIntermediateOnly boo
 	certs, err := certUtil.FetchCertificateChain(cert)
 	if err != nil {
 		return err
+	}
+
+	if includeSystem {
+		certs, err = certUtil.AddRootCA(certs)
+		if err != nil {
+			return err
+		}
 	}
 
 	if outputIntermediateOnly {
@@ -90,6 +98,7 @@ func main() {
 		outputFilename         string
 		outputIntermediateOnly bool
 		outputDerFormat        bool
+		includeSystem          bool
 	)
 
 	app := cli.NewApp()
@@ -114,6 +123,11 @@ func main() {
 			Usage:       "output DER format",
 			Destination: &outputDerFormat,
 		},
+		cli.BoolFlag{
+			Name:        "include-system, s",
+			Usage:       "include root CA from system in output",
+			Destination: &includeSystem,
+		},
 	}
 	app.Action = func(c *cli.Context) {
 		args := c.Args()
@@ -121,7 +135,7 @@ func main() {
 			inputFilename = args[0]
 		}
 
-		err := run(inputFilename, outputFilename, outputIntermediateOnly, outputDerFormat)
+		err := run(inputFilename, outputFilename, outputIntermediateOnly, outputDerFormat, includeSystem)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)

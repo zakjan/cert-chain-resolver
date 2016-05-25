@@ -43,6 +43,14 @@ TEMP_FILE="$(mktemp)"
     $CMD < "$DIR/comodo.crt" > "$TEMP_FILE"
     diff "$TEMP_FILE" "$DIR/comodo.bundle.crt"
 
+    # Append CA root cert to output
+    $CMD -s < "$DIR/comodo.crt" > "$TEMP_FILE"
+    diff "$TEMP_FILE" "$DIR/comodo.withca.crt"
+
+    # Already has CA root cert
+    $CMD -s < "$DIR/multiple-issuer-urls.crt" > "$TEMP_FILE"
+    diff "$TEMP_FILE" "$DIR/multiple-issuer-urls.bundle.crt"
+
     # it should detect invalid certificate
     (! echo "xxx" | $CMD)
 )
