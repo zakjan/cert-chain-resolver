@@ -6,6 +6,17 @@ import (
 	"net/http"
 )
 
+func isSelfSigned(cert *x509.Certificate) bool {
+	return cert.CheckSignatureFrom(cert) == nil
+}
+
+func isChainRootNode(cert *x509.Certificate) bool {
+	if isSelfSigned(cert) {
+		return true
+	}
+	return false
+}
+
 func FetchCertificateChain(cert *x509.Certificate) ([]*x509.Certificate, error) {
 	var certs []*x509.Certificate
 
@@ -30,6 +41,10 @@ func FetchCertificateChain(cert *x509.Certificate) ([]*x509.Certificate, error) 
 		cert, err := DecodeCertificate(data)
 		if err != nil {
 			return nil, err
+		}
+
+		if isChainRootNode(cert) {
+			break
 		}
 
 		certs = append(certs, cert)
