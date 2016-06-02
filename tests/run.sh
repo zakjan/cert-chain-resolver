@@ -56,13 +56,16 @@ TEMP_FILE="$(mktemp)"
     diff "$TEMP_FILE" "$DIR/dstrootcax3.pem"
 
     # it should detect invalid certificate
-    (! echo "xxx" | $CMD)
+    (
+         set +e
+         ! echo "xxx" | $CMD
+    )
 
     # Build and start the webserver to serve the certificates
-    go build tests/local-aia-server.go
-    sudo ${DIR}/../local-aia-server &
-    PID=$!
-    sleep 3
+    go build -o  "${DIR}/http-server" "${DIR}/http-server.go"
+    sudo "${DIR}/http-server" "${DIR}" &
+    PID="$!"
+    sleep 1
 
     # It should correctly detect root certificates to prevent infinite traversal loops when the root
     # certificate also has an AIA Certification Authority Issuer record
@@ -70,7 +73,7 @@ TEMP_FILE="$(mktemp)"
     diff "$TEMP_FILE" "$DIR/self-issued.bundle.crt"
 
     # Stop the webserver
-    kill $PID
+    sudo kill "$PID"
 )
 STATUS="$?"
 

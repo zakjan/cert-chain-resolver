@@ -6,4 +6,4 @@
 /cert-chain-resolver
 /out
 
-tests/local-aia-server
+tests/http-server
