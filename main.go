@@ -135,12 +135,12 @@ func main() {
 		}
 
 		err := run(inputFilename, outputFilename, outputIntermediateOnly, outputDerFormat, includeSystem)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			os.Exit(1)
-		}
-
-		return nil
+		return err
 	}
-	app.Run(os.Args)
+
+	err := app.Run(os.Args)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 }
