@@ -18,11 +18,15 @@ NAME:
 USAGE:
    cert-chain-resolver [global options] [INPUT_FILE]
 
+VERSION:
+   1.0.1
+
 GLOBAL OPTIONS:
    --output OUTPUT_FILE, -o OUTPUT_FILE  output to OUTPUT_FILE (default: stdout)
    --intermediate-only, -i               output intermediate certificates only
    --der, -d                             output DER format
    --include-system, -s                  include root CA from system in output
+   --version, -v                         print the version
 ```
 
 ## Example
