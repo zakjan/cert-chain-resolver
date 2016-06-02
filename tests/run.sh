@@ -63,7 +63,7 @@ TEMP_FILE="$(mktemp)"
 
     # Build and start the webserver to serve the certificates
     go build -o  "${DIR}/http-server" "${DIR}/http-server.go"
-    sudo "${DIR}/http-server" "${DIR}" &
+    "${DIR}/http-server" "${DIR}" &
     PID="$!"
     sleep 1
 
@@ -73,7 +73,7 @@ TEMP_FILE="$(mktemp)"
     diff "$TEMP_FILE" "$DIR/self-issued.bundle.crt"
 
     # Stop the webserver
-    sudo kill "$PID"
+    kill "$PID"
 )
 STATUS="$?"
 
