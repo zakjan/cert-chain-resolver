@@ -58,16 +58,19 @@ TEMP_FILE="$(mktemp)"
     # it should detect invalid certificate
     (! echo "xxx" | $CMD)
 
-    # It should correctly detect root certificates to prevent infinite traversal loops when the root
-    # certificate also has an AIA Certification Authority Issuer record
-
     # Build and start the webserver to serve the certificates
     go build tests/local-aia-server.go
     sudo ${DIR}/../local-aia-server &
     PID=$!
     sleep 3
+
+    # It should correctly detect root certificates to prevent infinite traversal loops when the root
+    # certificate also has an AIA Certification Authority Issuer record
     $CMD < "$DIR/self-issued.crt" > "$TEMP_FILE"
     diff "$TEMP_FILE" "$DIR/self-issued.bundle.crt"
+
+    # Stop the webserver
+    kill $PID
 )
 STATUS="$?"
 
