@@ -49,7 +49,7 @@ TEMP_FILE="$(mktemp)"
 
     # Already has CA root cert
     $CMD -s < "$DIR/multiple-issuer-urls.crt" > "$TEMP_FILE"
-    diff "$TEMP_FILE" "$DIR/multiple-issuer-urls.bundle.crt"
+    diff "$TEMP_FILE" "$DIR/multiple-issuer-urls.withca.bundle.crt"
 
     # DST Root CA X3, PKCS#7 package
     $CMD < "$DIR/dstrootcax3.p7c" > "$TEMP_FILE"
@@ -57,6 +57,17 @@ TEMP_FILE="$(mktemp)"
 
     # it should detect invalid certificate
     (! echo "xxx" | $CMD)
+
+    # It should correctly detect root certificates to prevent infinite traversal loops when the root
+    # certificate also has an AIA Certification Authority Issuer record
+
+    # Build and start the webserver to serve the certificates
+    go build tests/local-aia-server.go
+    sudo ${DIR}/../local-aia-server &
+    PID=$!
+    sleep 3
+    $CMD < "$DIR/self-issued.crt" > "$TEMP_FILE"
+    diff "$TEMP_FILE" "$DIR/self-issued.bundle.crt"
 )
 STATUS="$?"
 
