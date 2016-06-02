@@ -19,9 +19,10 @@ USAGE:
    cert-chain-resolver [global options] [INPUT_FILE]
 
 GLOBAL OPTIONS:
-   --output, -o "OUTPUT_FILE"   output filename (default: stdout)
-   --intermediate-only, -i      output intermediate certificates only
-   --der, -d                    output DER format
+   --output OUTPUT_FILE, -o OUTPUT_FILE  output to OUTPUT_FILE (default: stdout)
+   --intermediate-only, -i               output intermediate certificates only
+   --der, -d                             output DER format
+   --include-system, -s                  include root CA from system in output
 ```
 
 ## Example
@@ -40,6 +41,7 @@ Total 3 certificate(s) found.
 Dependencies:
 
 * Go 1.6
+* project cloned in `$GOPATH` (otherwise vendoring doesn't work, see https://github.com/golang/go/issues/12511)
 
 ```
 go get github.com/Masterminds/glide

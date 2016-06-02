@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 	"github.com/zakjan/cert-chain-resolver/certUtil"
 	"io/ioutil"
 	"os"
@@ -110,7 +110,7 @@ func main() {
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:        "output, o",
-			Usage:       "output filename (default: stdout)",
+			Usage:       "output to `OUTPUT_FILE` (default: stdout)",
 			Destination: &outputFilename,
 		},
 		cli.BoolFlag{
