@@ -2,10 +2,10 @@ package certUtil
 
 import (
 	"crypto/x509"
-    "testing"
-	"os"
-	"io/ioutil"
 	"github.com/stretchr/testify/assert"
+	"io/ioutil"
+	"os"
+	"testing"
 )
 
 func TestFetchCertificateChain(t *testing.T) {
