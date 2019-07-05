@@ -9,7 +9,7 @@ NOTE: The shell script is **deprecated**. Check [master](https://github.com/zakj
 
 ## Dependencies
 
-- wget
+- wget or curl
 - OpenSSL
 
 ## Usage
