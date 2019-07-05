@@ -7,6 +7,11 @@
 # Copyright (c) 2015 Jan Žák (http://zakjan.cz)
 # The MIT License (MIT).
 
+if [ "$BASH_VERSION" != '' ]; then
+    #run by bash.
+    shopt -s expand_aliases
+fi
+
 set -eu
 
 
