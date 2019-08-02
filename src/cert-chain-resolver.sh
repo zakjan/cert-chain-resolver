@@ -7,12 +7,22 @@
 # Copyright (c) 2015 Jan Žák (http://zakjan.cz)
 # The MIT License (MIT).
 
+if [ "$BASH_VERSION" != '' ]; then
+    #run by bash.
+    shopt -s expand_aliases
+fi
+
 set -eu
 
 
 alias command_exists="type >/dev/null 2>&1"
 alias echoerr="echo >&2"
 
+if command_exists curl; then
+  alias get_issuer="curl -so- "
+elif command_exists wget; then
+  alias get_issuer="wget -qO- "
+fi
 
 INPUT_FILENAME="/dev/stdin"
 OUTPUT_FILENAME="/dev/stdout"
@@ -75,9 +85,11 @@ usage() {
 }
 
 check_dependencies() {
-  if ! command_exists wget; then
-    echoerr "Error: wget is required"
-    return 1
+  if ! command_exists curl; then
+    if ! command_exists wget; then
+      echoerr "Error: wget or curl is required"
+      return 1
+    fi
   fi
 
   if ! command_exists openssl; then
@@ -152,7 +164,7 @@ main() {
     fi
 
     # download issuer's certificate, normalize to PEM
-    if ! CURRENT_CERT="$(wget -q -O - "$ISSUER_CERT_URL" | cert_normalize_to_pem)"; then
+    if ! CURRENT_CERT="$(get_issuer "$ISSUER_CERT_URL" | cert_normalize_to_pem)"; then
       return 1
     fi
 
