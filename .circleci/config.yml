@@ -1,0 +1,19 @@
+version: 2.1
+jobs:
+  default:
+    docker:
+      - image: golang:1.16-alpine
+    steps:
+      - run: apk add bash build-base git openssh
+      - add_ssh_keys
+      - checkout
+      - run: ./circle.sh dependencies
+      - run: ./circle.sh build
+      - run: ./circle.sh test
+      - run: ./circle.sh release
+      - store_artifacts:
+          path: out
+workflows:
+  default:
+    jobs:
+      - default

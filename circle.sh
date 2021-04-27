@@ -3,29 +3,20 @@
 set -eu
 
 
-GO_PROJECT_HOME="/home/ubuntu/.go_workspace/src/${CIRCLE_REPOSITORY_URL/https:\/\//}"
-
 dependencies() {
-    mkdir -p "${GO_PROJECT_HOME}"
-    rsync -a --delete . "${GO_PROJECT_HOME}"
-
-    cd "${GO_PROJECT_HOME}"
     go mod download
 }
 
 build() {
-    cd "${GO_PROJECT_HOME}"
     go build
 }
 
 test() {
-    cd "${GO_PROJECT_HOME}"
     go test ./...
     tests/run.sh
 }
 
 release() {
-    cd "${GO_PROJECT_HOME}"
     mkdir out
 
     GOARCH="amd64"
@@ -44,7 +35,6 @@ release() {
         cd out
         tar -czf "${DIR}.tar.gz" "${DIR}"
         rm -rf "${DIR}"
-        cp "${DIR}.tar.gz" "${CIRCLE_ARTIFACTS}"
         cd ..
     done
 }
