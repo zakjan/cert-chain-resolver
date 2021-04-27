@@ -10,8 +10,7 @@ dependencies() {
     rsync -a --delete . "${GO_PROJECT_HOME}"
 
     cd "${GO_PROJECT_HOME}"
-    go get github.com/Masterminds/glide
-    glide install
+    go mod download
 }
 
 build() {
@@ -21,7 +20,7 @@ build() {
 
 test() {
     cd "${GO_PROJECT_HOME}"
-    go test $(glide novendor)
+    go test ./...
     tests/run.sh
 }
 

@@ -45,7 +45,6 @@ Total 3 certificate(s) found.
 Dependencies:
 
 * Go >= 1.12
-* project cloned in `$GOPATH` (otherwise vendoring doesn't work, see https://github.com/golang/go/issues/12511)
 
 ```
 go mod download
@@ -55,7 +54,7 @@ go build
 ## Tests
 
 ```
-go test $(glide novendor)
+go test ./...
 tests/run.sh
 ```
 
