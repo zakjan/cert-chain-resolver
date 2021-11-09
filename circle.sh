@@ -30,7 +30,7 @@ release() {
             OUT="${OUT}.exe"
         fi
 
-        GOOS="${GOOS}" GOARCH="${GOARCH}" go build -o "${OUT}"
+        GOOS="${GOOS}" GOARCH="${GOARCH}" CGO_ENABLED=0 go build -o "${OUT}"
 
         cd out
         tar -czf "${DIR}.tar.gz" "${DIR}"
