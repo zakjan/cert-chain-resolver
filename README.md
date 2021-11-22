@@ -19,7 +19,7 @@ USAGE:
    cert-chain-resolver [global options] [INPUT_FILE]
 
 VERSION:
-   1.0.3
+   1.0.4
 
 GLOBAL OPTIONS:
    --output OUTPUT_FILE, -o OUTPUT_FILE  output to OUTPUT_FILE (default: stdout)
