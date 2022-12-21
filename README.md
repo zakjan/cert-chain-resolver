@@ -73,7 +73,6 @@ You should be able to fetch intermediate certificates from the issuer and concat
 ### Other implementations
 
 * [deprecated shell script](https://github.com/zakjan/cert-chain-resolver/tree/shell) (shell)
-* [https://certificatechain.io/](https://certificatechain.io/) (webservice)
 * [freekmurze/ssl-certificate-chain-resolver](https://github.com/freekmurze/ssl-certificate-chain-resolver) (PHP)
 
 ### Licence
